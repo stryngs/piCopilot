@@ -13,7 +13,9 @@ class Main(object):
         ## main table gen
         if wireless is True:
             self.cap.db.execute("""
-                                CREATE TABLE IF NOT EXISTS main(pi_timestamp TIMESTAMPTZ,
+                                CREATE TABLE IF NOT EXISTS main(marker INT,
+                                                                devid TEXT,
+                                                                pi_timestamp TIMESTAMPTZ,
                                                                 coord TEXT,
                                                                 addr1_oui TEXT,
                                                                 addr1 TEXT,
@@ -115,12 +117,11 @@ class Main(object):
             except:
                 o4 = None
 
-        ## Mark the time
-        self.unity.times()
-
         ## Insert
         self.cap.db.execute("""
-                            INSERT INTO main (pi_timestamp,
+                            INSERT INTO main (marker,
+                                              devid,
+                                              pi_timestamp,
                                               coord,
                                               addr1_oui,
                                               addr1,
@@ -153,8 +154,12 @@ class Main(object):
                                                 %s,
                                                 %s,
                                                 %s,
+                                                %s,
+                                                %s,
                                                 %s);
-                            """, (self.unity.pi_timestamp,
+                            """, (self.unity.marker,
+                                  self.unity.devid,
+                                  self.unity.pi_timestamp,
                                   self.unity.coord,
                                   o1,
                                   packet.addr1,

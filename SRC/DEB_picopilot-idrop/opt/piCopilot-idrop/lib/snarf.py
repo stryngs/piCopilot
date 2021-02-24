@@ -22,6 +22,16 @@ class Snarf(object):
         ### Eventually backport this
         self.sh = Shared()
         self.sh.unity = self.unity
+        
+        ## Notate devid and current marker
+        dbInstance.db.execute("""
+                              SELECT marker FROM main WHERE devid = %s ORDER BY marker DESC LIMIT 1;
+                              """,[self.unity.devid,])
+        tMarker = dbInstance.db.fetchone()
+        if tMarker is not None:
+            self.unity.marker = tMarker[0]
+        else:
+            self.unity.marker = 0
 
         print ('Using pkt silent time of:\n{0}\n'.format(self.unity.seenMaxTimer))
 
@@ -38,15 +48,26 @@ class Snarf(object):
             self.pStore = False
 
         ## Track unique addr combos
-        self.cap.db.execute('CREATE TABLE IF NOT EXISTS uniques(pi_timestamp TIMESTAMPTZ,\
-                                                                coord TEXT,\
-                                                                type TEXT,\
-                                                                subtype TEXT,\
-                                                                FCfield TEXT,\
-                                                                addr1 TEXT,\
-                                                                addr2 TEXT,\
-                                                                addr3 TEXT,\
-                                                                addr4 TEXT)')
+        self.cap.db.execute("""
+                            CREATE TABLE IF NOT EXISTS uniques(marker INT,
+                                                               devid TEXT,
+                                                               pi_timestamp TIMESTAMPTZ,
+                                                               coord TEXT,
+                                                               type TEXT,
+                                                               subtype TEXT,
+                                                               FCfield TEXT,
+                                                               addr1 TEXT,
+                                                               addr2 TEXT,
+                                                               addr3 TEXT,
+                                                               addr4 TEXT,
+                                                               UNIQUE (subtype,
+                                                                       type,
+                                                                       FCfield,
+                                                                       addr1,
+                                                                       addr2,
+                                                                       addr3,
+                                                                       addr4))
+                             """)
 
     def subParser(self, packet):
         if packet.type == 0:
@@ -116,9 +137,8 @@ class Snarf(object):
                         fSig = ''
                     print('RSSI: {0}\n'.format(fSig))
 
-                    ## Timestamp
-                    self.unity.times()
-                    timeDelta = self.unity.origTime - self.unity.timeMarker
+                    ## Silence deltas
+                    timeDelta = self.unity.origTime - int(time.time())
                     #if timeDelta > 30:
 
                     ## Reset the counter
@@ -148,8 +168,7 @@ class Snarf(object):
                     print('RSSI: %s\n'.format(fSig))
 
                     ## Timestamp
-                    self.unity.times()
-                    timeDelta = self.unity.timeMarker - self.unity.origTime
+                    timeDelta = self.unity.epoch - int(time.time())
                     if timeDelta > 30:
                         ## Reset the counter
                         self.unity.origTime = int(time.time())
@@ -163,22 +182,6 @@ class Snarf(object):
             else:
                 return
         return snarf
-
-
-    def handlerExclusion(self, packet):
-        """Handles exclusions
-        Currently only designed to avoid Beacon Frames
-
-        Eventually this needs to be moved to lfilter.
-        Absolutely does not belong in prn
-
-        Returns True if packet should be excluded
-        """
-        if self.unity.args.e is not None:
-            if 'beacon' in self.unity.args.e:
-                if packet.haslayer(Dot11Beacon): ## Should be this plus other layers...? Will have to dissect some frames, Perhaps Dot11Beacon + is needed.
-                    return True
-        return False
 
 
     ### Move to handler.py
@@ -220,45 +223,50 @@ class Snarf(object):
             ## Figure out if this combo has been seen before
             if p not in self.unity.seenDict:
                 self.unity.seenDict.update({p: (1, time.time())})
-                #print ('PASS TIMER')
 
-                ## Add if psql
-                if self.unity.args.psql is True:
-                    pType = self.unity.PE.conv.symString(packet[Dot11], 'type')
-                    subType = self.subParser(packet)
-                    fcField = self.unity.PE.conv.symString(packet[Dot11], 'FCfield')
-                    try:
-                        self.cap.db.execute("""
-                                            INSERT INTO uniques (pi_timestamp,
-                                                                 coord,
-                                                                 type,
-                                                                 subtype,
-                                                                 FCfield,
-                                                                 addr1,
-                                                                 addr2,
-                                                                 addr3,
-                                                                 addr4)
-                                                         VALUES (%s,
-                                                                 %s,
-                                                                 %s,
-                                                                 %s,
-                                                                 %s,
-                                                                 %s,
-                                                                 %s,
-                                                                 %s,
-                                                                 %s);
-                                            """, (self.unity.pi_timestamp,
-                                                  self.unity.coord,
-                                                  pType,
-                                                  subType,
-                                                  fcField,
-                                                  packet.addr1,
-                                                  packet.addr2,
-                                                  packet.addr3,
-                                                  packet.addr4))
-                    except Exception as E:
-                        pass
-                        #print (E)
+                ## Store the entry
+                pType = self.unity.PE.conv.symString(packet[Dot11], 'type')
+                subType = self.subParser(packet)
+                fcField = self.unity.PE.conv.symString(packet[Dot11], 'FCfield')
+                try:
+                    print('Trying unique')
+                    self.cap.db.execute("""
+                                        INSERT INTO uniques (marker,
+                                                             devid,
+                                                             pi_timestamp,
+                                                             coord,
+                                                             type,
+                                                             subtype,
+                                                             FCfield,
+                                                             addr1,
+                                                             addr2,
+                                                             addr3,
+                                                             addr4)
+                                                     VALUES (%s,
+                                                             %s,
+                                                             %s,
+                                                             %s,
+                                                             %s,
+                                                             %s,
+                                                             %s,
+                                                             %s,
+                                                             %s,
+                                                             %s,
+                                                             %s);
+                                        """, (self.unity.marker,
+                                              self.unity.devid,
+                                              self.unity.pi_timestamp,
+                                              self.unity.coord,
+                                              pType,
+                                              subType,
+                                              fcField,
+                                              packet.addr1,
+                                              packet.addr2,
+                                              packet.addr3,
+                                              packet.addr4))
+                except Exception as E:
+                    pass
+                    #print (E)
 
                 return False
 
@@ -274,6 +282,10 @@ class Snarf(object):
                     return False
                 else:
                     #print ('FAIL TIMER')
+                    
+                    ## Revert the count
+                    self.unity.marker -= 1
+                    
                     return True
         except:
             pass
@@ -282,38 +294,42 @@ class Snarf(object):
     def sniffer(self):
         def snarf(packet):
             """Sniff the data"""
+            
+            ## Notate the time
+            self.unity.times()
 
-            ## Test for exclusions
-            if self.handlerExclusion(packet) is False:
-
-                ## Test for whitelisting if wanted
-                if len(self.unity.wSet) > 0:
-                    if self.whiteLister(self.unity.wSet, packet) is False:
-                        ### THIS IS ENTRY POINT
-                        if self.seenTest(packet) is False:
-                            ### CLEAR HOT TO LOG
-
-                            self.handlerMain(packet)
-                            self.handlerProtocol(packet)
-                            if self.pStore is not False:
-                                self.pStore.write(packet)
-                        else:
-                            return
-                    else:
-                        return
-                else:
-                    #What if it is not wanted
+            ## Test for whitelisting if wanted
+            if len(self.unity.wSet) > 0:
+                
+                if self.whiteLister(self.unity.wSet, packet) is False:
+                    
+                    
                     ### THIS IS ENTRY POINT
                     if self.seenTest(packet) is False:
                         ### CLEAR HOT TO LOG
+
                         self.handlerMain(packet)
                         self.handlerProtocol(packet)
                         if self.pStore is not False:
                             self.pStore.write(packet)
+
                     else:
                         return
+
+                else:
+                    return
+
+
             else:
-                return
+                ### THIS IS ENTRY POINT
+                if self.seenTest(packet) is False:
+                    ### CLEAR HOT TO LOG
+                    self.handlerMain(packet)
+                    self.handlerProtocol(packet)
+                    if self.pStore is not False:
+                        self.pStore.write(packet)
+                else:
+                    return
         return snarf
 
 

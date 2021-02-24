@@ -17,6 +17,7 @@ class Unify(object):
         self.epoch = None
         self.coord = None
         self.loc = Location()
+        self.devid = '42'
 
         ## Verify GPS if enabled
 
@@ -74,9 +75,8 @@ class Unify(object):
         """
         ### This converts to Wireshark style
         #int(wepCrypto.endSwap('0x' + p.byteRip(f.notdecoded[8:], qty = 8, compress = True)), 16)
-
-        self.coord = self.loc.getCoord()
         self.epoch = int(time.time())                                                     ## Store the epoch in UTC
+        self.coord = self.loc.getCoord()
         self.pi_timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(self.epoch))   ## Store the sql timestamp for UTC
-        self.origStamp = self.origTime
         self.timeMarker = self.epoch
+        self.marker += 1

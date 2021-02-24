@@ -1,2 +1,3 @@
 disable swapfile in image...
-apt-get install telnet
+apt-get install telnet gpsd-clients
+pip officetasks

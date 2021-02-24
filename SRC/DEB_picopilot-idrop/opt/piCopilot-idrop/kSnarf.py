@@ -39,16 +39,11 @@ def main(args):
         if args.m == 'listen' and args.t:
             print('Targeted functionality not currently implemented for listen mode\n')
             sys.exit(1)
-    if args.i is None and args.d is None and args.q is None:
-        print('-i OR -d -OR- -q must be selected\n')
+    if args.i is None and args.d is None:
+        print('-i OR -d must be selected\n')
         sys.exit(1)
     if args.i is not None and args.m is None:
         print('-i must be used with -m')
-        sys.exit(1)
-
-    ## Deal with DB query
-    if args.q is not None:
-        print('DB Querying not implemented yet\n')
         sys.exit(1)
 
     ## Proceed with snarfing
@@ -121,9 +116,6 @@ def main(args):
                         unity.wSet.add(i.lower().strip())
                         unity.wSet = iFile.read().splitlines()
                     unity.wSet.discard('')
-
-                ## Create initial timestamp
-                unity.times()
 
                 ## go
                 pHandler = snarf.sniffer()
@@ -233,14 +225,11 @@ if __name__== '__main__':
     parser.add_argument('-r',
                         help = 'receive data from a pcap')
     parser.add_argument('-s',
-                        help = '$(given frame) silent time')
+                        help = 'Silent time')
     parser.add_argument('-t',
                         help = 'target MAC')
     parser.add_argument('-w',
                         help = 'whitelist')
-    parser.add_argument('-z',
-                        action = 'store_true',
-                        help = 'manual mode')
     parser.add_argument('--beat',
                         help = 'Heartbeat timing')
     parser.add_argument('--db',
@@ -272,7 +261,7 @@ if __name__== '__main__':
     args = parser.parse_args()
 
     ## Deal with groups later
-    if not (args.i or args.r or (args.t and not args.m) or args.q):
+    if not (args.i or args.r or (args.t and not args.m)):
         print('Try:\nkSnarf --help\n')
         sys.exit(1)
 

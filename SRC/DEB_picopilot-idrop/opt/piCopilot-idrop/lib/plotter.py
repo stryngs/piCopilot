@@ -40,11 +40,11 @@ class Plotter(object):
 
 
 
-        probe requests by rType rssi
+        probe requests by rType, rssi
         grouped by addr2_oui, addr2 and essid
         """
         self.db.execute("""
-                        SELECT M.addr2_oui, P.addr2, P.essid, ARRAY_TO_STRING(ARRAY_AGG(M.rssi), ',') AS "rssis" FROM probes P INNER JOIN main M ON P.pid = M.pid GROUP BY M.addr2_oui, P.addr2, P.essid;
+                        SELECT M.addr2_oui, P.addr2, P.essid, ARRAY_TO_STRING(ARRAY_AGG(M.rssi), ',') AS "rssis" FROM probes P INNER JOIN main M ON P.marker = M.marker GROUP BY M.addr2_oui, P.addr2, P.essid;
                         """)
         self.ourTuples = self.db.fetchall()
         if len(self.ourTuples) > 0:

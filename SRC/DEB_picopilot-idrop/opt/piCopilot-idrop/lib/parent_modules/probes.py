@@ -13,7 +13,9 @@ class Probes(object):
 
         ## Create
         dbInstance.db.execute("""
-                                CREATE TABLE IF NOT EXISTS probes(pi_timestamp TIMESTAMPTZ,
+                                CREATE TABLE IF NOT EXISTS probes(marker INT,
+                                                                  devID TEXT,
+                                                                  pi_timestamp TIMESTAMPTZ,
                                                                   coord TEXT,
                                                                   subtype TEXT,
                                                                   addr1 TEXT,

@@ -11,7 +11,9 @@ class Request(object):
         """packet.haslayer('Dot11ProbeReq')"""
         try:
             self.cap.db.execute("""
-                                INSERT INTO probes (pi_timestamp,
+                                INSERT INTO probes (marker,
+                                                    devid,
+                                                    pi_timestamp,
                                                     coord,
                                                     subtype,
                                                     addr1,
@@ -22,8 +24,12 @@ class Request(object):
                                                     %s,
                                                     %s,
                                                     %s,
+                                                    %s,
+                                                    %s,
                                                     %s);
-                                """, (self.unity.pi_timestamp,
+                                """, (self.unity.marker,
+                                      self.unity.devid,
+                                      self.unity.pi_timestamp,
                                       self.unity.coord,
                                       self.unity.PE.sType.mgmtSubtype(packet.subtype),
                                       packet.addr1,
