@@ -182,7 +182,7 @@ piCopilot has been tested and verified with the Pixhawk IMU.  The unmanned packa
 * Remove the # in /etc/network/interfaces.d/wlan0
 * Give /etc/resolv.conf a nameserver
 
-### Upgrading (Optional)
+### Upgrading (Optional and known to break things - be curious || wait for a new release)
 * New image releases can be sporadic
 * Interim updates are maintained by the DEBs folder
 * Let us determine what versions came with our image:
@@ -197,6 +197,16 @@ apt-get purge -y picopilot*
 ```
 * Once complete verify that /opt now contains only 2 folders; pigpio and vc.
 ```
+ls /opt
+```
+* Perform some steps not included in the current release for piCopilot
+```
+apt-get install -y telnet gpsd-clients python3-pandas
+git clone https://github.com/stryngs/officeTasks.git
+python3 -m pip install officeTasks/officeTasks-1.4.6.tar.gz
+```
+* Download the updates for piCopilot
+```
 git clone https://github.com/stryngs/piCopilot.git
 cd piCopilot/DEBs
 dpkg -i *.deb
@@ -208,7 +218,6 @@ dpkg -i *.deb
     ```
     psql idrop
     DROP TABLE IF EXISTS blue;
-    DROP TABLE IF EXISTS dhcp;
     DROP TABLE IF EXISTS main;
     DROP TABLE IF EXISTS probes;
     DROP TABLE IF EXISTS uniques;
@@ -216,15 +225,12 @@ dpkg -i *.deb
     ```
 
 ### Known bug(s)
-* For the page on /, the idrop Service gets confused by the presence of kBlue and how sh.sysMode is used.  When enabling kBlue and returning to the main menu, the idrop Service will now read as kBlue.  This will be worked out in later releases.  To force it proper, cycle the idrop service off and then back on.  It will correct by virtue of sh.sysMode flipping through the original idrop logic.
-* kBlue makes use of the Ubertooth by way of ubertooth-btle and reading from a pre-recorded stream.  The streams default to 20 seconds per stream in real-time.  As kBlue currently does not rip stdout for ubertooth-btle, there is no time association just yet.  Every packet within a given burst of packets on a given bluesPipe will have the timestamp until a workaround is found.
-
-### Up next
-* Further kSnarf and kBlue method integrations.
-* OUI integrations for kBlue module.
-* A confirmation for nicPREP or timeSYNC prior to firing.
-  * The current workaround is to erase piCopilot browser tab history after firing nicPREP or timeSYNC.  This will ensure you do not accidently re-fire it during operational use.
-
+* For the page on /, the idrop Service gets confused by the presence of kBlue and how sh.sysMode is used.  When enabling kBlue and returning to the main menu, the idrop Service will now read as kBlue.  This will be worked out in later releases.
+    * To force it proper, cycle the idrop service off and then back on.  It will correct by virtue of sh.sysMode flipping through the original idrop logic.
+* kBlue makes use of the Ubertooth by way of ubertooth-btle and reading from a pre-recorded stream.  The streams default to 20 seconds per stream in real-time.  As kBlue currently does not rip stdout for ubertooth-btle, there is no time association just yet.
+    * Every packet within a given burst of packets on a given bluesPipe will have the timestamp until a workaround is found.
+* When downloading idrop logs, the cache gets hung.
+    * Clear the cache in history as a workaround.
 
 ### Contacting support
 For help with any of the steps or to inquire how piCopilot can support your integration needs for unmanned systems, please contact us via email:

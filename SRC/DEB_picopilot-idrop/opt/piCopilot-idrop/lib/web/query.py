@@ -56,6 +56,7 @@ class QUERY(object):
             shutil.rmtree('/opt/piCopilot-idrop/logs')
             os.mkdir('/opt/piCopilot-idrop/logs')
             os.system('chown -R postgres /opt/piCopilot-idrop/logs')
+            os.system('chown -R postgres /opt/piCopilot-idrop/downloads')
             self.truncater.truncate()
             return render_template('query/index.html',
                                    _kSnarf = self.sh.rlCheck('kSnarfPsql'),
@@ -70,19 +71,15 @@ class QUERY(object):
             """Controls the download capabilities for pgsql"""
             try:
                 os.remove('/opt/piCopilot-idrop/downloads/logs.zip')
-            except:
-                pass
+            except Exception as E:
+                print(E)
             self.exporter.pgsqlConnect()
             self.exporter.pgsqlExporter()
             self.exporter.con.close()
             shutil.make_archive('/opt/piCopilot-idrop/downloads/logs/', 'zip', root_dir='/opt/piCopilot-idrop/logs')
 
             ## fsprep
-            os.system('rm -f /opt/piCopilot-idrop/logs/requests.csv')
-            os.system('rm -f /opt/piCopilot-idrop/logs/responses.csv')
-            os.system('rm -f /opt/piCopilot-idrop/logs/from-ds.csv')
-            os.system('rm -f /opt/piCopilot-idrop/logs/to-ds.csv')
-            os.system('rm -f /opt/piCopilot-idrop/logs/pipes.csv')
+            #os.system('rm -f /opt/piCopilot-idrop/logs/pipes.csv')
             return send_file('/opt/piCopilot-idrop/downloads/logs.zip', as_attachment=True)
 ###############################################################################
 

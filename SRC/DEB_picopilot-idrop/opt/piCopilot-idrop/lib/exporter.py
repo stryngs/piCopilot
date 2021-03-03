@@ -9,6 +9,7 @@ class Exporter(object):
     def __init__(self, shared):
         self.shared = shared
 
+
     def pgsqlConnect(self):
         ## Connects
         ### Need to fix this for config.ini purposes
@@ -22,55 +23,50 @@ class Exporter(object):
         ## Tables
         self.db.execute("""
                         CREATE TEMPORARY TABLE allprobes AS
-                        SELECT pi_timestamp, essid, subtype, addr2, addr1
-                        FROM probes WHERE
-                        subtype LIKE 'Probe %';
+                        SELECT P.pi_timestamp, M.rssi, P.essid, P.subtype, P.addr2, P.addr1
+                        FROM probes P INNER JOIN main M
+                        ON M.marker = P.marker
+                        WHERE
+                        P.devid = M.devid
+                        AND
+                        P.subtype LIKE 'Probe %';
                         """)
         self.db.execute("""
-                        CREATE TEMPORARY TABLE allds AS
-                        SELECT pi_timestamp, addr2, addr1, addr3, addr4
+                        CREATE TEMPORARY TABLE tods AS
+                        SELECT addr2, addr3
                         FROM main WHERE type = 'Data'
-                        AND (direc = 'from-ds' OR direct = 'to-ds');
+                        AND direc = 'to-ds';
                         """)
-
-        ## Pipe logics
-        ### Broken logic because we changed how to/from-ds works
-        ###self.db.execute("""
-        ###                CREATE TEMPORARY TABLE fd AS
-        ###                SELECT pi_timestamp, addr1, addr3
-        ###                FROM main WHERE type = 'Data'
-        ###                AND direc = 'from-ds';
-        ###                """)
-        ###self.db.execute("""
-        ###                SELECT * FROM fd;
-        ###                """)
-        ###fromRows = set(self.db.fetchall())
-        ###self.db.execute("""
-        ###                SELECT * FROM tods;
-        ###                """)
-        ###toRows = set(self.db.fetchall())
-        ###pipeList = list(fromRows & toRows)
+        self.db.execute("""
+                        CREATE TEMPORARY TABLE dsto AS
+                        SELECT addr3, addr2
+                        FROM main WHERE type = 'Data'
+                        AND direc = 'to-ds';
+                        """)
+        self.db.execute("""
+                        SELECT * FROM tods;
+                        """)
+        t1 = set(self.db.fetchall())
+        self.db.execute("""
+                        SELECT * FROM dsto;
+                        """)
+        t2 = set(self.db.fetchall())
+        pipeList = list(t1 & t2)
 
         ## fsprep
         os.system('rm -f /opt/piCopilot-idrop/logs/probes.csv')
-        os.system('rm -f /opt/piCopilot-idrop/logs/ds.csv')
-#        os.system('rm -f /opt/piCopilot-idrop/logs/pipes.csv')
+        os.system('rm -f /opt/piCopilot-idrop/logs/pipes.csv')
 
-        ## Outputs
+        ## Probes -n- pipes
         self.db.execute("""
                         copy allprobes to '/opt/piCopilot-idrop/logs/probes.csv' delimiter ',' csv header;
                         """)
-        self.db.execute("""
-                        copy allds to '/opt/piCopilot-idrop/logs/ds.csv' delimiter ',' csv header;
-                        """)
-
-        ### Broken til a new query is created
-        ###hdrs = ['date', 'x', 'y']
-        ###with open('/opt/piCopilot-idrop/logs/pipes.csv', 'w') as oFile:
-        ###    csv_out = csv.writer(oFile,
-        ###                         delimiter = ',',
-        ###                         quotechar = '"',
-        ###                         quoting = csv.QUOTE_MINIMAL)
-        ###    csv_out.writerow(hdrs)
-        ###    for row in pipeList:
-        ###        csv_out.writerow(row)
+        hdrs = ['x', 'y']
+        with open('/opt/piCopilot-idrop/logs/pipes.csv', 'w') as oFile:
+           csv_out = csv.writer(oFile,
+                                delimiter = ',',
+                                quotechar = '"',
+                                quoting = csv.QUOTE_MINIMAL)
+           csv_out.writerow(hdrs)
+           for row in pipeList:
+               csv_out.writerow(row)
