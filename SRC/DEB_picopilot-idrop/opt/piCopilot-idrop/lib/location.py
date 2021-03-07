@@ -1,7 +1,7 @@
 import gpsd
 
 class Location(object):
-    
+
     def __init__(self):
         self.trigger = None
         try:
@@ -13,9 +13,7 @@ class Location(object):
 
 
     def getCoord(self):
-        lCheck = None
         try:
-            x = self.gpsObj.get_current()
-            return x.position()
+            return self.gpsObj.get_current().position()
         except:
             return None
