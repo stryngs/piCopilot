@@ -28,7 +28,7 @@ class Plotter(object):
 
     def pgsqlConnect(self):
         """Connect to the db"""
-        cStr = "dbname='{0}' user='{1}' host='{2}' password='{3}'".format(self.shared.unity.db, self.shared.unity.user, self.shared.unity.host, self.shared.unity.password)
+        cStr = "dbname='{0}' user='{1}' host='{2}' password='{3}'".format(self.shared.conf.db, self.shared.conf.user, self.shared.conf.host, self.shared.conf.password)
         self.con = psycopg2.connect(cStr)
         self.con.autocommit = True
         self.db = self.con.cursor()

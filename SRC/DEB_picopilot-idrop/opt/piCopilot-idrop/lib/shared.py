@@ -1,9 +1,15 @@
 import subprocess
+from configparser import ConfigParser
 
 class Shared(object):
     """Shared idrop class"""
 
-    def __init__(self, unity = None):
+    def __init__(self, unity = None, conf = None):
+
+        ## bring in the config file
+        if conf is not None:
+            self.conf = conf
+
         self.sysMode = 'None'
         if unity is not None:
             self.unity = unity

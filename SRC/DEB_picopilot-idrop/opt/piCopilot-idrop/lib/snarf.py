@@ -26,7 +26,7 @@ class Snarf(object):
         ## Notate devid and current marker
         dbInstance.db.execute("""
                               SELECT marker FROM main WHERE devid = %s ORDER BY marker DESC LIMIT 1;
-                              """,[self.unity.devid,])
+                              """,[str(self.unity.devid),])
         tMarker = dbInstance.db.fetchone()
         if tMarker is not None:
             self.unity.marker = tMarker[0]
@@ -37,7 +37,6 @@ class Snarf(object):
 
         if sProtocol is not None:
             self.probes = Probes(self.cap, self.unity)
-                #print('added probes')
 
         ## Deal with PCAP storage
         if self.unity.args.pcap:
@@ -84,107 +83,7 @@ class Snarf(object):
         else:
             return self.subType
 
-    def k9(self, kDict):
-        def snarf(packet):
-            """This function listens for a given MAC
-            Currently no logic for detecting FCfield, etc.
-            This functionality will be added later on
 
-            As well, no logic for multiple tgts on a given frame,
-            yet.
-            """
-            #print self.packetCount
-            #self.packetCount += 1
-
-            tName = None
-            match = False
-            while match is False:
-                a1 = kDict.get(packet.addr1)
-                if a1 is not None:
-                    tName = a1
-                    match = True
-                a2 = kDict.get(packet.addr2)
-                if a2 is not None:
-                    tName = a2
-                    match = True
-                a3 = kDict.get(packet.addr3)
-                if a3 is not None:
-                    tName = a3
-                    match = True
-                a4 = kDict.get(packet.addr4)
-                if a4 is not None:
-                    tName = a4
-                    match = True
-                match = True
-            if tName is not None:
-
-                ## Avoid 30 second lag on first sighting
-                if self.kSeen is None:
-                    self.kSeen = True
-
-                    ## Handle main
-                    self.handlerMain(packet)
-
-                    ## Notify
-                    #print('SNARF!! {0} traffic detected!'.format(tName))
-
-                    ### verify before trusting hexstr(str())
-                    notDecoded = hexstr(str(packet.notdecoded), onlyhex=1).split(' ')
-
-                    try:
-                        fSig = -(256 - int(notDecoded[self.unity.offset + 3], 16))
-                    except IndexError:
-                        fSig = ''
-                    print('RSSI: {0}\n'.format(fSig))
-
-                    ## Silence deltas
-                    timeDelta = self.unity.origTime - int(time.time())
-                    #if timeDelta > 30:
-
-                    ## Reset the counter
-                    self.unity.origTime = int(time.time())
-
-                    notice = 'SNARF!! {0} traffic detected!'.format(tName)
-
-                    ### MODIFY /opt/piCopilot-idrop/lib/notifier.py
-                    #self.alt.notify(notice)
-                    #time.sleep(3)
-                    #self.cap.entry(packet)
-                else:
-                    ## Handle main
-                    self.handlerMain(packet)
-
-
-                    ## Notify
-                    print('SNARF!! {0} traffic detected!'.format(tName))
-
-                    ### verify before trusting hexstr(str())
-                    notDecoded = hexstr(str(packet.notdecoded), onlyhex = 1).split(' ')
-
-                    try:
-                        fSig = -(256 - int(notDecoded[self.unity.offset + 3], 16))
-                    except IndexError:
-                        fSig = ''
-                    print('RSSI: %s\n'.format(fSig))
-
-                    ## Timestamp
-                    timeDelta = self.unity.epoch - int(time.time())
-                    if timeDelta > 30:
-                        ## Reset the counter
-                        self.unity.origTime = int(time.time())
-
-                        notice = 'SNARF!! {0} traffic detected!'.format(tName)
-
-                        ### MODIFY /opt/piCopilot-idrop/lib/notifier.py
-                        # self.alt.notify(notice)
-                        #time.sleep(3)
-                        #self.cap.entry(packet)
-            else:
-                return
-        return snarf
-
-
-    ### Move to handler.py
     def handlerMain(self, packet):
         """Handles core aspect of logging
 
@@ -192,9 +91,10 @@ class Snarf(object):
         """
         self.main.trigger(packet)
 
-    ### Move to handler.py
-    ### Break this down for a speed boost
+
     def handlerProtocol(self, packet):
+        """Handles protocols if needed
+        """
         self.probes.trigger(packet)
 
 
@@ -207,9 +107,6 @@ class Snarf(object):
         Will return False if the delta of now and previous timestamp
         for a given frame are > self.unity.seenMaxTimer {Default 30 seconds},
         otherwise we ignore, and thus by ignoring, we do not clog up the logs
-
-        Create a table, and store this data so we can query on the fly
-            - only with psql
         """
         try:
             p = (packet[Dot11].subtype,
@@ -229,7 +126,6 @@ class Snarf(object):
                 subType = self.subParser(packet)
                 fcField = self.unity.PE.conv.symString(packet[Dot11], 'FCfield')
                 try:
-                    print('Trying unique')
                     self.cap.db.execute("""
                                         INSERT INTO uniques (marker,
                                                              devid,
@@ -308,8 +204,10 @@ class Snarf(object):
                     if self.seenTest(packet) is False:
                         ### CLEAR HOT TO LOG
 
-                        self.handlerMain(packet)
-                        self.handlerProtocol(packet)
+                        #self.handlerMain(packet) ##-- Uncomment when there is something other than trigger needed
+                        self.main.trigger(packet)
+                        #self.handlerProtocol(packet) ##-- Uncomment when there is something other than trigger needed
+                        self.probes.trigger(packet)
                         if self.pStore is not False:
                             self.pStore.write(packet)
 
@@ -324,31 +222,14 @@ class Snarf(object):
                 ### THIS IS ENTRY POINT
                 if self.seenTest(packet) is False:
                     ### CLEAR HOT TO LOG
-                    self.handlerMain(packet)
-                    self.handlerProtocol(packet)
+                    #self.handlerMain(packet) ##-- Uncomment when there is something other than trigger needed
+                    self.main.trigger(packet)
+                    #self.handlerProtocol(packet) ##-- Uncomment when there is something other than trigger needed
+                    self.probes.trigger(packet)
                     if self.pStore is not False:
                         self.pStore.write(packet)
                 else:
                     return
-        return snarf
-
-
-    def string(self, word):
-        def snarf(packet):
-            """This function controls what we gather and pass to the DB
-            Right now, there is no filtering at all
-            The object word is simply an example of closure
-
-            The parsing work is currently done in dbControl.py,
-            Eventually this needs to be a pure API type call with different libs,
-            for choosing what type of db entries to make
-            """
-            self.cap.entry(packet)
-            self.pCount += 1
-            self.tCount += 1
-            if self.pCount == 100:
-                #print('{0} frames logged'.format(self.tCount))
-                self.pCount = 0
         return snarf
 
 

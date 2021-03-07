@@ -189,20 +189,17 @@ class Blue(object):
             print('\n[~] Not ignoring any MACs\n')
 
         ## db creds
-        if os.path.isfile('config.ini'):
-            parser = ConfigParser()
-            psr = parser.read('config.ini')
-            self.dbUser = parser.get('creds', 'dbUser')
-            self.dbPass = parser.get('creds', 'dbPass')
-            self.dbHost = parser.get('creds', 'dbHost')
-            self.dbName = parser.get('creds', 'dbName')
-            print('[+] Credentials loaded from config.ini\n')
-        else:
-            self.dbUser = 'root'
-            self.dbPass = 'idrop'
-            self.dbHost = '127.0.0.1'
-            self.dbName = 'idrop'
-            print('[-] config.ini not found -- going with defaults\n')
+        class Foo(object):
+            pass
+        self.conf = Foo()
+        parser = ConfigParser()
+        parser.read('system.conf')
+        self.conf.dbUser = parser.get('creds', 'dbUser')
+        self.conf.dbPass = parser.get('creds', 'dbPass')
+        self.conf.dbHost = parser.get('creds', 'dbHost')
+        self.conf.dbName = parser.get('creds', 'dbName')
+        self.conf.devid = int(parser.get('creds', 'devid'))
+        self.conf.seenMax = int(parser.get('prop', 'seenMax'))
 
         ## Connect to the db
         self.con, self.db, self.dbName = self.pgsqlPrep()
@@ -237,8 +234,6 @@ class Blue(object):
     def pgsqlFilter(self):
         def snarf(packet):
             self.blinder.unity.times()
-            print(self.blinder.unity.pi_timestamp)
-            print(self.blinder.unity.coord)
 
             ## Only test if known MAC field(s) exists
             if self.blinder.choiceMaker(packet) is True:
@@ -285,7 +280,7 @@ class Blue(object):
     def pgsqlPrep(self):
         """ Connect and prep the pgsql db"""
         try:
-            cStr = "dbname='{0}' user='{1}' host='{2}' password='{3}'".format(self.dbName, self.dbUser, self.dbHost, self.dbPass)
+            cStr = "dbname='{0}' user='{1}' host='{2}' password='{3}'".format(self.conf.dbName, self.conf.dbUser, self.conf.dbHost, self.conf.dbPass)
             con = psycopg2.connect(cStr)
             con.autocommit = True
             db = con.cursor()
@@ -312,8 +307,8 @@ class Blue(object):
 
     def main(self):
         ## Unify it up
-        self.blinder.unity = Unify(self.args, control = None, kBlue = True)
-        self.blinder.unity.seenMaxTimer = 30
+        self.blinder.unity = Unify(self.args, control = None, kBlue = True, conf = self.conf)
+        self.blinder.unity.seenMaxTimer = self.conf.seenMax
         self.blinder.unity.seenDict = {}
 
         while True:
@@ -335,10 +330,6 @@ if __name__ == '__main__':
 
     ## ARGUMENT PARSING
     parser = argparse.ArgumentParser(description = 'kBlue')
-    group = parser.add_mutually_exclusive_group(required = True)
-    group.add_argument('--pgsql',
-                       action = 'store_true',
-                       help = 'kBlue pgsql mode')
     args = parser.parse_args()
 
     ## ADD SIGNAL HANDLER

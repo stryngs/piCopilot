@@ -12,8 +12,11 @@ Test filter() for kBlue and kSnarf
     - Management
     - Data
 
-## Play with PCAP timestamp logging
-    - Right now this uses the localtime, versus captured time.
-    - Refer to unifier.times()
-
 ## Add check to make sure -m by itself says what more to do, versus --help
+
+
+### MODIFY /opt/piCopilot-idrop/lib/notifier.py
+# self.alt.notify(notice)
+#time.sleep(3)
+#self.cap.entry(packet)
+

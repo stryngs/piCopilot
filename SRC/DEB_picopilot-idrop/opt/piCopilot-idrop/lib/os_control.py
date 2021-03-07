@@ -9,7 +9,7 @@ class Hopper(object):
     """Threading class for channel hopping
 
     Will hop chan based on chanList every 10 seconds as default
-    mod via --hop in __main__
+    mod via system.conf
     """
 
     def __init__(self, controlObj):

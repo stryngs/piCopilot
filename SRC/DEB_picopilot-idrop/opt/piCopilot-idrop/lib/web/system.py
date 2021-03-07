@@ -34,7 +34,7 @@ class SYSTEM(object):
         def index():
             """Start the service"""
             return render_template('system/control/index.html',
-                                   uChoice = ['ListenPsql', 'k9', 'Off'])
+                                   uChoice = ['On', 'Off'])
 ###############################################################################
 
 
@@ -45,38 +45,10 @@ class SYSTEM(object):
 
             self.sh.systemServiceControl = request.form.get('buttonStatus')
 
-            ## Deal with k9 turning off
-            if sh.systemServiceControl == 'Off':
-                if self.sh.rlCheck('k9') == 'RUNNING':
-                    self.sh.rlControl('stop', 'k9')
-                    GPIO.output(23, GPIO.LOW)
-
-                    ## Cheap way to snipe k9 as it is hanging
-                    kPID = str(self.sh.bashReturn("ps aux | grep k[9] | awk '{print $2}'"))
-                    print ('OUR k9 PID IS {0}'.format(str(kPID)))
-                    print ('OUR k9 PID IS TYPE {0}'.format(str(type(kPID))))
-                    try:
-                        self.sh.bashReturn("kill -9 %s" % kPID)
-                    except:
-                        time.sleep(2)
-                        try:
-                            self.sh.bashReturn("kill -9 %s" % kPID)
-                        except:
-                            pass
-                        pass
-
             ## If the service is running and we turn off
             if self.sh.rlCheck('kSnarfPsql') == 'RUNNING':
+
                 ### Really need to add more mature logic.  This is just to get us running with psql
-
-                if self.sh.systemServiceControl == 'k9':
-                    ret = '<strong>You cannot invoke k9 mode when idrop is in listen mode</strong>'
-                    ret += '</br></br>'
-                    ret += '<a href="/">'
-                    ret += '    <button>Main Menu</button>'
-                    ret += '</a>'
-                    return ret
-
                 if self.sh.systemServiceControl == 'Off':
                     self.sh.rlControl('stop', 'kSnarfPsql')
                     GPIO.output(23, GPIO.LOW)
@@ -104,13 +76,8 @@ class SYSTEM(object):
                     self.sh.rlControl('start', 'nicMon')
                     self.monMode = True
 
-                ## Check for k9 mode
-                if self.sh.systemServiceControl == 'k9':
-                    self.sh.rlControl('start', 'k9')
-                    GPIO.output(23, GPIO.HIGH)
-
                 ## Check for listen mode psql
-                if self.sh.systemServiceControl == 'ListenPsql':
+                if self.sh.systemServiceControl == 'On':
                     self.sh.rlControl('start', 'kSnarfPsql')
                     GPIO.output(23, GPIO.HIGH)
 

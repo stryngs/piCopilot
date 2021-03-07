@@ -17,21 +17,15 @@ app = Flask(__name__)
 @app.route('/')
 def index():
 
+    i1 = "iwlist {0} channel | grep Current | ".format(sh.conf.nic)
+    i2 = "awk '{print $5}' | cut -d\) -f1| tail -n 1"
+    iStr = i1 + i2
     if sh.sysMode == 'None':
         return render_template('index.html',
                                kBlue_Service = sh.rlCheck('kBlue'),
                                system_Service = sh.sysMode,
                                system_Mode = 'None',
-                               system_Channel = sh.bashReturn("iwlist wlan1mon channel | grep Current | awk '{print $5}' | cut -d\) -f1| tail -n 1"),
-                               query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
-                               system_hddAvail = sh.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"),
-                               system_Time = sh.bashReturn("date"))
-    if sh.sysMode == 'k9':
-        return render_template('index.html',
-                               kBlue_Service = sh.rlCheck('kBlue'),
-                               system_Service = sh.sysMode,
-                               system_Mode = sh.rlCheck('k9'),
-                               system_Channel = sh.bashReturn("iwlist wlan1mon channel | grep Current | awk '{print $5}' | cut -d\) -f1| tail -n 1"),
+                               system_Channel = sh.bashReturn(iStr),
                                query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
                                system_hddAvail = sh.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"),
                                system_Time = sh.bashReturn("date"))
@@ -40,7 +34,7 @@ def index():
                                kBlue_Service = sh.rlCheck('kBlue'),
                                system_Service = sh.sysMode,
                                system_Mode = sh.rlCheck('kSnarfPsql'),
-                               system_Channel = sh.bashReturn("iwlist wlan1mon channel | grep Current | awk '{print $5}' | cut -d\) -f1| tail -n 1"),
+                               system_Channel = sh.bashReturn(iStr),
                                query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
                                system_hddAvail = sh.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"),
                                system_Time = sh.bashReturn("date"))
@@ -49,7 +43,7 @@ def index():
                                kBlue_Service = sh.rlCheck('kBlue'),
                                system_Service = sh.sysMode,
                                system_Mode = 'Off',
-                               system_Channel = sh.bashReturn("iwlist wlan1mon channel | grep Current | awk '{print $5}' | cut -d\) -f1| tail -n 1"),
+                               system_Channel = sh.bashReturn(iStr),
                                query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
                                system_hddAvail = sh.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"),
                                system_Time = sh.bashReturn("date"))
@@ -59,7 +53,7 @@ def index():
                                kBlue_Service = sh.rlCheck('kBlue'),
                                system_Service = sh.sysMode,
                                system_Mode = sh.sysMode,
-                               system_Channel = sh.bashReturn("iwlist wlan1mon channel | grep Current | awk '{print $5}' | cut -d\) -f1| tail -n 1"),
+                               system_Channel = sh.bashReturn(iStr),
                                query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
                                system_hddAvail = sh.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"),
                                system_Time = sh.bashReturn("date"))
@@ -69,7 +63,7 @@ def index():
                            kBlue_Service = sh.rlCheck('kBlue'),
                            system_Service = sh.sysMode,
                            system_Mode = sh.sysMode,
-                           system_Channel = sh.bashReturn("iwlist wlan1mon channel | grep Current | awk '{print $5}' | cut -d\) -f1| tail -n 1"),
+                           system_Channel = sh.bashReturn(iStr),
                            query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
                            system_hddAvail = sh.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"),
                            system_Time = sh.bashReturn("date"))
@@ -92,16 +86,19 @@ def nicPrep():
 
 @app.route('/TIMEsync')
 def timeSync():
+    i1 = "iwlist {0} channel | grep Current | ".format(sh.conf.nic)
+    i2 = "awk '{print $5}' | cut -d\) -f1| tail -n 1"
+    iStr = i1 + i2
     os.system('/bin/bash /opt/piCopilot-scripts/timeSync.sh')
     return render_template('index.html',
                            kBlue_Service = sh.rlCheck('kBlue'),
                            system_Service = sh.sysMode,
                            system_Mode = 'None',
-                           system_Channel = sh.bashReturn("iwlist wlan1mon channel | grep Current | awk '{print $5}' | cut -d\) -f1| tail -n 1"),
+                           system_Channel = sh.bashReturn(iStr),
                            query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
                            system_hddAvail = sh.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"),
                            system_Time = sh.bashReturn("date"))
-    
+
 ###############################################################################
 
 if __name__ == '__main__':
@@ -111,14 +108,15 @@ if __name__ == '__main__':
         pass
 
     ## Setup
-    f = Foo()
+    conf = Foo()
     parser = ConfigParser()
-    parser.read('idrop.conf')
-    f.user = parser.get('creds', 'dbUser')
-    f.password = parser.get('creds', 'dbPass')
-    f.host = parser.get('creds', 'dbHost')
-    f.db = parser.get('creds', 'dbName')
-    sh = Shared(f)
+    parser.read('system.conf')
+    conf.user = parser.get('creds', 'dbUser')
+    conf.password = parser.get('creds', 'dbPass')
+    conf.host = parser.get('creds', 'dbHost')
+    conf.db = parser.get('creds', 'dbName')
+    conf.nic = parser.get('hw', 'nic')
+    sh = Shared(conf = conf)
 
     ## Instantiate needed classes
     systemClass = SYSTEM(sh)

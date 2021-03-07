@@ -13,13 +13,10 @@ fudge 127.127.28.0 time1 .15 flag1 1 refid GPS
 class Unify(object):
     """This class acts a singular point of contact for tracking purposes"""
 
-    def __init__(self, args, control = None, kBlue = None):
+    def __init__(self, args, control = None, kBlue = None, driver = None, conf = None):
         self.epoch = None
         self.coord = None
         self.loc = Location()
-        self.devid = '42'
-
-        ## Verify GPS if enabled
 
         ## Set the orig timestamp
         self.origTime = int(time.time())
@@ -27,15 +24,19 @@ class Unify(object):
 
         ## make args avail
         self.args = args
+        
+        if conf is not None:
+            self.conf = conf
+            self.devid = conf.devid
 
         ## idrop only
         if kBlue is None:
 
             ## Grab the OS control object
             self.control = control
-            if args.m != 'ids':
+            if conf.mode != 'ids':
                 ## Set the driver
-                self.iwDriver = self.args.d
+                self.iwDriver = driver
 
                 ## Notate driver offset
                 self.PE = PE
@@ -79,4 +80,9 @@ class Unify(object):
         self.coord = self.loc.getCoord()
         self.pi_timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(self.epoch))   ## Store the sql timestamp for UTC
         self.timeMarker = self.epoch
-        self.marker += 1
+        
+        ## kBlue fun
+        try:
+            self.marker += 1
+        except:
+            pass
