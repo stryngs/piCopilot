@@ -153,6 +153,18 @@ systemctl start grafana-server
       * SSL Mode --> disable
 * A sample dashboard for idrop is waiting on you
 
+### Tuning idrop (Optional)
+To activate the k9 module notate out the MACs in question in the file /opt/piCopilot-idrop/targets.lst.  Each MAC is separated by a new line and an optional descriptor.  Upon running idrop will parse targets.lst and then update the targets table accordingly.  Each row within targets is constrained by by the mac and optional descriptor.  Thus, you may have the MAC of aa:bb:cc:dd:ee:ff multiple times, but only if the optional descriptor is different.
+
+In the current version only notations in targets.lst will be notated.  Future planning will allow the user to optionally include all MACs listed in the targets table.
+
+targets.lst is case-insensitive for the MAC.  An example targets.lst is as follows:
+```
+aa:bb:cc:dd:ee:ff My lost cell phone
+11:22:AA:Bb:CD:ef That laptop I lost in the woods
+```
+
+
 ### Tuning kBlue (Optional)
 Benchmark on Raspberry Pi 3 Model B+ as determined by [blRip.py](https://github.com/stryngs/workshops/blob/master/DC28/blRip.py) w/ no print:
 ```

@@ -5,7 +5,6 @@ class K9(object):
     """Handles all aspects of notating specific MACs for 802.11"""
 
     def __init__(self, dbInstance, unity):
-        print('Running k9')
         self.unity = unity
         self.dbInstance = dbInstance
         self.kExist = False
@@ -33,18 +32,16 @@ class K9(object):
                 tRows = iFile.read().splitlines()
 
             for t in tRows:
-                print(t)
                 if len(t) > 0:
-                    
+
                     ## Mark it
                     self.kExist = True
-                    
+
                     ## Notate it
-                    mac = t.split()[0]
+                    mac = t.split()[0].lower()
                     reason = ' '.join(t.split()[1:])
                     try:
                         self.unity.kTargets.add(mac)
-                        print(self.unity.kTargets)
                     except Exception as E:
                         print(E)
                     try:
@@ -78,7 +75,7 @@ class K9(object):
             addr4 = packet.addr4
         else:
             tgr = False
-        
+
         ## The most likely, thus first
         if tgr is False:
             return
