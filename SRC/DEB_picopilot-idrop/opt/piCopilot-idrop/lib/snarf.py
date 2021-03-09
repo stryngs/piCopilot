@@ -2,7 +2,9 @@ import logging
 import time
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from scapy.all import *
+from lib.parent_modules.k9 import K9
 from lib.parent_modules.probes import Probes
+from lib.parent_modules.k9 import K9
 from lib.main import Main
 from lib.notifier import Alert
 from lib.shared import Shared
@@ -35,8 +37,16 @@ class Snarf(object):
 
         print ('Using pkt silent time of:\n{0}\n'.format(self.unity.seenMaxTimer))
 
+        ## Protocols
         if sProtocol is not None:
             self.probes = Probes(self.cap, self.unity)
+
+        ## k9 prep
+        self.k9 = K9(self.cap, self.unity)
+        if self.k9.kExist is True:
+            pHandler = self.snarfTgt
+        else:
+            phandler = self.snarfOpen
 
         ## Deal with PCAP storage
         if self.unity.args.pcap:
@@ -68,35 +78,21 @@ class Snarf(object):
                                                                        addr4))
                              """)
 
-    def subParser(self, packet):
-        if packet.type == 0:
-            self.subType = self.unity.PE.sType.mgmtSubtype(packet.subtype)
-        elif packet.type == 1:
-            self.subType = self.unity.PE.sType.ctrlSubtype(packet.subtype)
-        elif packet.type == 2:
-            self.subType = self.unity.PE.sType.dataSubtype(packet.subtype)
-        else:
-            self.subType = packet.subtype
-
-        if self.subType is None:
-            return packet.subtype
-        else:
-            return self.subType
-
-
-    def handlerMain(self, packet):
-        """Handles core aspect of logging
-
-        As main is the total, only an entry to total is needed to track main
-        """
+    def snarfMin(self, packet):
+        """Main only"""
         self.main.trigger(packet)
 
-
-    def handlerProtocol(self, packet):
-        """Handles protocols if needed
-        """
+    def snarfOpen(self, packet):
+        """Main and probes"""
+        self.main.trigger(packet)
         self.probes.trigger(packet)
 
+
+    def snarfTgt(self, packet):
+        """Main, probes and k9"""
+        self.main.trigger(packet)
+        self.probes.trigger(packet)
+        self.k9.trigger(packet)
 
     def seenTest(self, packet):
         """Gather essential identifiers for "have I seen this packet" test
@@ -196,41 +192,45 @@ class Snarf(object):
 
             ## Test for whitelisting if wanted
             if len(self.unity.wSet) > 0:
-                
                 if self.whiteLister(self.unity.wSet, packet) is False:
-                    
-                    
-                    ### THIS IS ENTRY POINT
                     if self.seenTest(packet) is False:
                         ### CLEAR HOT TO LOG
-
-                        #self.handlerMain(packet) ##-- Uncomment when there is something other than trigger needed
                         self.main.trigger(packet)
-                        #self.handlerProtocol(packet) ##-- Uncomment when there is something other than trigger needed
                         self.probes.trigger(packet)
+                        self.k9.trigger(packet)
                         if self.pStore is not False:
                             self.pStore.write(packet)
-
                     else:
                         return
-
                 else:
                     return
-
-
             else:
-                ### THIS IS ENTRY POINT
                 if self.seenTest(packet) is False:
                     ### CLEAR HOT TO LOG
-                    #self.handlerMain(packet) ##-- Uncomment when there is something other than trigger needed
                     self.main.trigger(packet)
-                    #self.handlerProtocol(packet) ##-- Uncomment when there is something other than trigger needed
                     self.probes.trigger(packet)
+                    self.k9.trigger(packet)
                     if self.pStore is not False:
                         self.pStore.write(packet)
                 else:
                     return
         return snarf
+
+
+    def subParser(self, packet):
+        if packet.type == 0:
+            self.subType = self.unity.PE.sType.mgmtSubtype(packet.subtype)
+        elif packet.type == 1:
+            self.subType = self.unity.PE.sType.ctrlSubtype(packet.subtype)
+        elif packet.type == 2:
+            self.subType = self.unity.PE.sType.dataSubtype(packet.subtype)
+        else:
+            self.subType = packet.subtype
+
+        if self.subType is None:
+            return packet.subtype
+        else:
+            return self.subType
 
 
     def whiteLister(self, wSet, packet):

@@ -25,6 +25,9 @@ class Unify(object):
         ## make args avail
         self.args = args
         
+        ## Tgts
+        self.kTargets = set()
+        
         if conf is not None:
             self.conf = conf
             self.devid = conf.devid

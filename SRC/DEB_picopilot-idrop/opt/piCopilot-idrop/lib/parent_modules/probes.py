@@ -7,14 +7,13 @@ class Probes(object):
 
     def __init__(self, dbInstance, unity):
         self.unity = unity
-        #self.discovery = discovery.Discovery(dbInstance, unity)
         self.request = request.Request(dbInstance, unity)
         self.response = response.Response(dbInstance, unity)
 
         ## Create
         dbInstance.db.execute("""
                                 CREATE TABLE IF NOT EXISTS probes(marker INT,
-                                                                  devID TEXT,
+                                                                  devid TEXT,
                                                                   pi_timestamp TIMESTAMPTZ,
                                                                   coord TEXT,
                                                                   subtype TEXT,
