@@ -2,22 +2,18 @@
 piCopilot is 100% feedback driven.  If you like piCopilot and wish to contribute, simply fork and PR; or raise an issue.
 
 ## What is piCopilot
-piCopilot is an ecosystem for autonomous workflows.  It has been tailored for the world of unmanned Intelligence, Surveillance and Reconnaissance.  Whether acting as an assistant during air, land or sea missions, tracking 802.11 and Bluetooth signals, kinetic interaction with objects, area monitoring, or some other interesting integration; piCopilot stands ready to assist the operator with whatever may come.
+piCopilot is an ecosystem for autonomous workflows.  It has been tailored for the world of unmanned Intelligence, Surveillance and Reconnaissance.  Whether acting as an assistant during air, land or sea missions, tracking Wi-Fi and Bluetooth signals, kinetic interaction with objects, optical monitoring, or some other interesting integration; piCopilot stands ready to assist the operator with whatever may come.
 
-The Wi-Fi and Bluetooth monitoring capabilities of piCopilot may not be legal for use in every Country or locality.  Ensure that you check the rules and regulations for where you will be operating prior to use.  The operator is fully and wholly responsible for any legal and/or civil issues that may arise from their usage of such integrations.
+The Wi-Fi and Bluetooth monitoring capabilities of piCopilot may not be legal for use in every Country or locality.  Ensure that you check the rules and regulations for where you will be operating prior to use.  The operator is fully and wholly responsible for any legal and/or civil issues that may arise from their usage of piCopilot.
 
-## Defense against tools like piCopilot
-The Wireless and Bluetooth monitoring capabilities of piCopilot should bring pause to anyone.  piCopilot is not special in this regard, nor is it alone.  There are many tools which do the same thing and sometimes more so than even the idrop module; freely available by way of entities like Google and Github.  The very power one has when wielding a tool like piCopilot is immense.  Sharing of the code for the world to read comes with it a unique responsibility.
-
-The steps below are meant for the average consumer in 2021.  The point is to drive home the details in a way that someone who has not used piCopilot or studied how things like Wireless and Bluetooth work, "gets it".
-
+## Lessons learned from tools like piCopilot
 1. Keep Wireless and Bluetooth off when not in use, seriously.  Yes, really.
 
 Your device is noisy because it is always looking for the next best thing.  By turning off Wireless and Bluetooth when not in use you will reduce the unique signatures that can be associated with a common device in 2021 that has the ability to leverage Wireless or Bluetooth.  Tracking of those signatures is already in use by various advertising companies and potentially, Governmental agencies around the world.  Why make yourself a bigger target just for the sake of convenience?
 
 2. Work from home took on a whole new meaning.
 
-For about $35 worth of gear the world around you changes into 0s, 1s and patterns.  No longer does one have to wait until working hours are over to see a new ESSID on the off-chance an employee brought their laptop home from work.  The Internet as we have it in 2021 proved one thing, baked-in needs to be the new bolt-on.  Did you know a Bank moved in next door?  How about a Law firm?  That dentist too.  piCopilot surely does.
+For about $35 worth of gear the world around you changes into 0s, 1s and patterns.  No longer does one have to wait until working hours are over to see a new ESSID on the off-chance an employee brought their laptop home from work.  The Internet as we have it in 2021 proved one thing, baked-in needs to be the new bolt-on.  Did you know a Bank moved in next door?  How about a Law firm?  That dentist too.  idrop surely will.
 
 3. Keep your list of "Remembered Networks" empty or at a minimum.  Your device can be fooled into giving out details of where it has tried to, or successfully connected to a Network Name (ESSID).  Statistics can paint quite the vivid picture if you know what you seek.
 
@@ -33,19 +29,15 @@ Protect the very knowledge of your bubbles and change them up at random when you
 
 Friends don't let friends keep ESSIDs for extended times.
 
-5. Realize that there is no anonymity with Wireless, Bluetooth or most any of the common protocols the average person knows in 2021.
+5. Realize that there is no anonymity with Wireless or Bluetooth, to a point.  The best of softwares have bugs, people hunt those bugs.  Sometimes you keep your bug squishing techniques to yourself.  Sometimes you share.
 
 The very backbone of how it works would snap in half if you tried to truly make yourself invisible to others.  Who would they talk to if not you?  Using Wireless or Bluetooth tells anyone within roughly 100 yards of your position, "I am here".
 
 6. Build a piCopilot and learn just how all of this works.
 
-Anyone can code.  Anyone in 2021 should know the basics of how these common everyday protocols work.  Even if they'll never see it again, nor hear of it again; at least the seed was planted and maybe they'll remember.  The possibilities for modules like idrop and the like are endless and yet very well common; you just didn't know it.
+Anyone can code.  Anyone in 2021 has the unique opportunity to learn how these common everyday protocols work.  Even if they'll never see it again, nor hear of it again; at least the seed was planted and maybe they'll remember.  The possibilities for modules like idrop and the like are endless and yet very well common; you just didn't know it.  You found this page didn't you?
 
-7. Press the communities like Motorola, Apple, ABC, Google, etc; press them that your security and privacy matter.  The current model has none of that and it should rather be widespread and far-flung.  If your phone doesn't have a way to randomize your MAC, you should be asking why.
-
-Out of the United States Ninth Circuit just such a thing happened; somewhat.  Joffe -v- Google.  Also known as 11-17483.  Thirty and five pages.  Brilliant, masterful and far-reaching by all rights.  Eight years and going strong, yet how many of you are just finding out now for the first time?
-
-11-17483 is the precedence.  What will you do with it?
+7. Press the communities like Motorola, Apple, ABC, Google, etc; press them that your security and privacy matter.  The current model has none of that and it should rather be widespread and far-flung.  If your phone doesn't have a way to randomize your MAC, you should be asking why.  If you think your current randomization is good enough, boot up, run idrop and be surprised.
 
 ### Core packages
 * piCopilot
@@ -79,7 +71,11 @@ Out of the United States Ninth Circuit just such a thing happened; somewhat.  Jo
     * 9090 - idrop visuals
 
 ### Why does most of the system run as root!?
-piCopilot expects a secured network.  It is not recommended to connect the pipeline network to any network where untrusted users are present or have the ability to sniff traffic.  "Pick one thing and do it well".
+piCopilot expects a secured network.  It is not recommended to connect the pipeline network to any network where untrusted users are present or have the ability to sniff traffic.
+
+"Pick one thing and do it well".
+
+Support is available using the FOSS model if you need assistance with modifications on some of the lower level aspects of piCopilot usage.
 
 ### Getting started
 1. Create the piCopilot image for the Raspberry Pi
@@ -234,7 +230,7 @@ dpkg -i *.deb
     * Clear the cache in history as a workaround.
 
 ### Contacting support
-For help with any of the steps or to inquire how piCopilot can support your integration needs for unmanned systems, please contact us via email:
+For help with any of the steps or to inquire how piCopilot can support your integration needs for unmanned systems, please contact via email:
 ```
 support [at] configitnow.com
 ```

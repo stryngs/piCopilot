@@ -44,9 +44,9 @@ class Snarf(object):
         ## k9 prep
         self.k9 = K9(self.cap, self.unity)
         if self.k9.kExist is True:
-            pHandler = self.snarfTgt
+            self.pHandler = self.snarfTgt
         else:
-            phandler = self.snarfOpen
+            self.pHandler = self.snarfOpen
 
         ## Deal with PCAP storage
         if self.unity.args.pcap:
@@ -194,10 +194,7 @@ class Snarf(object):
             if len(self.unity.wSet) > 0:
                 if self.whiteLister(self.unity.wSet, packet) is False:
                     if self.seenTest(packet) is False:
-                        ### CLEAR HOT TO LOG
-                        self.main.trigger(packet)
-                        self.probes.trigger(packet)
-                        self.k9.trigger(packet)
+                        self.pHandler(packet)
                         if self.pStore is not False:
                             self.pStore.write(packet)
                     else:
@@ -206,10 +203,7 @@ class Snarf(object):
                     return
             else:
                 if self.seenTest(packet) is False:
-                    ### CLEAR HOT TO LOG
-                    self.main.trigger(packet)
-                    self.probes.trigger(packet)
-                    self.k9.trigger(packet)
+                    self.pHandler(packet)
                     if self.pStore is not False:
                         self.pStore.write(packet)
                 else:
