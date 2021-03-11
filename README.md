@@ -3,6 +3,9 @@ piCopilot is 100% feedback driven.  If you like piCopilot and wish to contribute
 
 Certain aspects of piCopilot may not be legal in every Country or locality.  Ensure that you check the rules and regulations for where you will be operating prior to use.  The operator is fully and wholly responsible for any legal and/or civil issues that may arise from their usage of piCopilot.
 
+## What is piCopilot
+piCopilot is an ecosystem for autonomous workflows.  It has been tailored for the world of unmanned Intelligence, Surveillance and Reconnaissance.  Whether acting as an assistant during air, land or sea missions, tracking 802.11 and Bluetooth signals, kinetic interaction with objects, area monitoring, or some other interesting integration; piCopilot stands ready to assist the operator with whatever may come.
+
 ## Defense against tools like piCopilot
 The Wireless and Bluetooth monitoring capabilities of piCopilot should bring pause to anyone.  piCopilot is not special in this regard, nor is it alone.  There are many tools which do the same thing and sometimes more so than even the idrop module; freely available by way of entities like Google and Github.  The very power one has when wielding a tool like piCopilot is immense.  Sharing of the code for the world to read comes with it a unique responsibility.
 
