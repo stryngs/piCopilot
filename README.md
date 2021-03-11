@@ -167,20 +167,6 @@ aa:bb:cc:dd:ee:ff My lost cell phone
 11:22:AA:Bb:CD:ef That laptop I lost in the woods
 ```
 
-
-### Tuning kBlue (Optional)
-Benchmark on Raspberry Pi 3 Model B+ as determined by [blRip.py](https://github.com/stryngs/workshops/blob/master/DC28/blRip.py) w/ no print:
-```
-$ python3 blRip.py
-Total time: 24.86375856399536
-Packets processed: 19235
-Packets per second: 773.6159418734769
-```
-With the limited horsepower of a Raspberry Pi, any shortcuts we can take are vital to keeping up with the live data flow.  By ignoring MAC Addresses that are known and unwanted for monitoring we can cut down on the chaff in the database.  To invoke this feature place a file named /opt/piCopilot-idrop/ignore.lst.  This file should consist of MAC addresses separated by a newline.  For now the only checking done on this is a character count.  The case of the string does not matter.  MAC addresses should be in colon format, i.e.:
-```
-aa:bb:cc:dd:ee:ff
-```
-
 ### Unmanned Vehicle Operations (Optional)
 The picopilot-unmanned package has been pre-installed as part of the 20200824 release.  In an effort to make the best of both idrop and the unmanned platform in a single image, the decision was made to have the controller running -- but none of the unmanned core services turned on.  The following files are of interest to anyone who wants to have the core services turned on at boot:
 * /etc/supervisor/conf.d/gsPrep.conf
