@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+## Deal with supervisor
+systemctl stop supervisor

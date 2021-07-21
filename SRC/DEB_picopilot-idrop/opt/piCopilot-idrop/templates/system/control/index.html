@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='images/logo.ico') }}">
+        <title>
+            System Service Control
+        </title>
+        <style>
+            .container { border:2px solid #ccc; width: auto; height: 300px; overflow-y: scroll;}
+        </style>
+        <script src="/static/jquery-3.1.1.min.js" type="text/javascript"></script>
+        <script>
+            function atleast_oneselection(e) {
+              if ($("input[type=radio]:checked").length === 0) {
+                  e.preventDefault();
+                  alert('At least one button must be selected to proceed');
+                  return false;
+              }
+            }
+        </script>
+    </head>
+    <body>
+        <table id="myTable">
+            <form onsubmit="return atleast_oneselection(event)" action={{ url_for('system.serviceControl') }} method = "POST">
+                idrop Service:
+                <input type="submit" value="Change Status" style="position:absolute; left:150px; top:10px">
+                {% for choice in uChoice %}
+                    <tr>
+                        <td>
+                            <input name="buttonStatus" value={{ choice }} type="radio">
+                        </td>
+                        <td>
+                            {{ choice }}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </br>
+            </form>
+        </table>
+        <a href={{ url_for('index') }} style="position:absolute; bottom:10px; right:10px;">
+            <button>
+                Click here to return to Main menu
+            </button>
+        </a>
+    </body>
+</html>

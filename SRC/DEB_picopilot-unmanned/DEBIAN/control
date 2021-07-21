@@ -1,0 +1,9 @@
+Package: picopilot-unmanned
+Version: 1.2.8
+Architecture: all
+Description: Pi powered Copilot for Unmanned Systems.
+Maintainer: stryngs <info@127.0.0.1>
+Conflicts: picopilot-sentry
+Depends: picopilot, picopilot-scripts, picopilot-wifi
+Section: net
+Priority: optional

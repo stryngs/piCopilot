@@ -1,0 +1,8 @@
+Package: picopilot-scripts
+Version: 0.1.0
+Architecture: all
+Depends: picopilot
+Section: net
+Priority: optional
+Description: Useful scripts for piCopilot usage across the ecosystem.
+Maintainer: stryngs <info@127.0.0.1>

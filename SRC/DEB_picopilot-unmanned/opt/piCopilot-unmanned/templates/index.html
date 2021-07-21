@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='images/logo.ico') }}">
+        <title>
+            Main Menu
+        </title>
+        <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 30%;
+            }
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <a href={{ url_for('telemetry.index') }}>
+            <button>
+                Telemetry Controls
+            </button>
+        </a>
+        </br>
+        </br>
+        <table>
+            <tr>
+                <td>
+                    Telemetry Service
+                </td>
+                <td>
+                    {{ telem_Service }}
+                </td>
+            </tr>
+        </table>
+        </br>
+        </br>
+        <a href={{ url_for('system.index') }}>
+            <button>
+                System Controls
+            </button>
+        </a>
+        </br>
+        </br>
+        <table>
+            <tr>
+                <td>
+                    System Available HDD
+                </td>
+                <td>
+                    {{ system_hddAvail }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    System Log Usage
+                </td>
+                <td>
+                    {{ system_logSize }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    hostapd NIC
+                </td>
+                <td>
+                    {{ hostNic }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    hostapd Status
+                </td>
+                <td>
+                    {{ hostStatus }}
+                </td>
+            </tr>
+        </table>
+        </br>
+        </br>
+        </br>
+        </br>
+        <a href={{ url_for('video.gstreamerStop') }}>
+            <button>
+                Video Off
+            </button>
+        </a>
+        </br>
+        </br>
+        <a href={{ url_for('video.gstreamerStart') }}>
+            <button>
+                640x480 Video
+            </button>
+        </a>
+        </br>
+        </br>
+        <a href={{ url_for('video.gstreamerStartII') }}>
+            <button>
+                800x600 Video
+            </button>
+        </a>
+        </br>
+        </br>
+        <a href={{ url_for('video.gstreamerStartIII') }}>
+            <button>
+                1280x720 Video
+            </button>
+        </a>
+    </body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='images/logo.ico') }}">
+        <title>
+            System Information
+        </title>
+        <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 30%;
+            }
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td>
+                    System Available HDD
+                </td>
+                <td>
+                    {{ hddAvail }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Log Usage
+                </td>
+                <td>
+                    {{ logSize }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    hostapd NIC
+                </td>
+                <td>
+                    {{ hostNic }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    hostapd Status
+                </td>
+                <td>
+                    {{ hostStatus }}
+                </td>
+            </tr>
+        </table>
+        </br>
+        </br>
+        </br>
+        <a href={{ url_for('system.logDownload') }}>
+            <button>
+                Download MavProxy Logs
+            </button>
+        </a>
+        </br>
+        </br>
+        </br>
+        </br>
+        <a href={{ url_for('system.logDelete') }}>
+            <button>
+                Delete MavProxy Logs
+            </button>
+        </a>
+        </br>
+        </br>
+        </br>
+        <a href={{ url_for('system.hostWlan0') }} style="position:absolute; bottom:150px; right:10px;">
+            <button>
+                Set wlan0 for hostapd
+            </button>
+        </a>
+        <a href={{ url_for('system.hostWlan1') }} style="position:absolute; bottom:100px; right:10px;">
+            <button>
+                Set wlan1 for hostapd
+            </button>
+        </a>
+        <a href={{ url_for('system.nicPrep') }} style="position:absolute; bottom:10px; right:10px;">
+            <button>
+                Run nicPrep
+            </button>
+        </a>
+        <a href={{ url_for('index') }} style="position:absolute; bottom:10px; left:10px;">
+            <button>
+                Click here to return to Main menu
+            </button>
+        </a>
+    </body>
+</html>

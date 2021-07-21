@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='images/logo.ico') }}">
+        <title>
+            Telemetry Controls
+        </title>
+        <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 30%;
+            }
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <a href={{ url_for('telemetry.serviceConfig') }}>
+            <button>
+                Telemetry Service
+            </button>
+        </a>
+        </br>
+        </br>
+        <table>
+            <tr>
+                <td>
+                    Service Status
+                </td>
+                <td>
+                    {{ serviceStatus }}
+                </td>
+            </tr>
+        </table>
+        <a href={{ url_for('index') }} style="position:absolute; bottom:10px; left:10px;">
+            <button>
+                Click here to return to Main menu
+            </button>
+        </a>
+    </body>
+</html>

@@ -1,0 +1,8 @@
+Package: picopilot
+Version: 1.4.0
+Architecture: all
+Description: piCopilot provides autonomous functionality for the Raspberry Pi.
+Maintainer: stryngs <info@127.0.0.1>
+Depends: hostapd, ieee-data, python3-netaddr, python3-rpi.gpio
+Section: net
+Priority: optional

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='images/idrop.png') }}">
+        <title>
+            kBlue Service
+        </title>
+        <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 30%;
+            }
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+            .grey {background-color: #E7E7E7; color: black;}
+        </style>
+    </head>
+    <body>
+        <a href={{ url_for('blue.index') }}>
+            <button class="grey">
+                kBlue Service
+            </button>
+        </a>
+        </br>
+        </br>
+        <table>
+            <tr>
+                <td>
+                    kBlue Status
+                </td>
+                <td>
+                    {{ kBlue_Service }}
+                </td>
+            </tr>
+        </table>
+        <a href={{ url_for('index') }} style="position:absolute; bottom:10px; right:10px;">
+            <button>
+                Click here to return to Main menu
+            </button>
+        </a>
+    </body>
+</html>

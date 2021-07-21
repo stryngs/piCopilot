@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='images/idrop.png') }}">
+        <title>
+            Main Menu
+        </title>
+        <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 30%;
+            }
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+            .nicPrep {background-color: #FFA500;}
+            .timeSync {background-color: #FFA500;}
+            .idrop {background-color: #4CAF50;}
+            .query {background-color: #008CBA;}
+            .black {background-color: #555555;}
+            .blue {background-color: #0DA2FF;}
+            .timer {background-color: #0DA2AA;}
+        </style>
+    </head>
+    <body>
+        <a href={{ url_for('system.index') }}>
+            <button class="idrop">
+                idrop
+            </button>
+        </a>
+        </br>
+        </br>
+        <table>
+            <tr>
+                <td>
+                    idrop Service
+                </td>
+                <td>
+                    {{ system_Service }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    idrop Mode
+                </td>
+                <td>
+                    {{ system_Mode }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Current Channel
+                </td>
+                <td>
+                    {{ system_Channel }}
+                </td>
+            </tr>
+        </table>
+        </br>
+        </br>
+        <a href={{ url_for('blue.index') }}>
+            <button class="blue">
+                kBlue
+            </button>
+        </a>
+        </br>
+        </br>
+        <table>
+            <tr>
+                <td>
+                    kBlue Service
+                </td>
+                <td>
+                    {{ kBlue_Service }}
+                </td>
+            </tr>
+        </table>
+        </br>
+        </br>
+        <a href={{ url_for('query.index') }}>
+            <button class="query">
+                System Query
+            </button>
+        </a>
+        </br>
+        </br>
+        <table>
+            <tr>
+                <td>
+                    System Available HDD
+                </td>
+                <td>
+                    {{ system_hddAvail }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    PostgreSQL Log Usage
+                </td>
+                <td>
+                    {{ query_Exports }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    System Time
+                </td>
+                <td>
+                    {{ system_Time }}
+                </td>
+            </tr>
+        </table>
+        <a href={{ url_for('timeClick') }} style="position:absolute; top:10px; right:30px;">
+            <button class="timer">
+                Marker
+            </button>
+        </a>
+        </br>
+        </br>
+        </br>
+        </br>
+        <a href={{ url_for('nicPrep') }} style="position:absolute; bottom:10px; left:10px;">
+            <button class="nicPrep">
+                NIC(s) Prep
+            </button>
+        </a>
+        <a href={{ url_for('timeSync') }} style="position:absolute; bottom:10px; right:10px;">
+            <button class="timeSync">
+                Time sync
+            </button>
+        </a>
+    </body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='images/idrop.png') }}">
+        <title>
+            System Information
+        </title>
+        <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 30%;
+            }
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+            .red {background-color: #FF0000;}
+        </style>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td>
+                    idrop
+                </td>
+                <td>
+                    {{ _kSnarf }}
+                </td>
+            </tr>
+        </table>
+        </br>
+        </br>
+        <table>
+            <tr>
+                <td>
+                    System Available HDD
+                </td>
+                <td>
+                    {{ hddAvail }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    SQL Usage
+                </td>
+                <td>
+                    {{ logSize }}
+                </td>
+            </tr>
+        </table>
+        </br>
+        </br>
+        </br>
+        <a href={{ url_for('query.pgLogDownload') }}>
+            <button>
+                Download idrop logs
+            </button>
+        </a>
+        </br>
+        </br>
+        <a href={{ url_for('query.pgVisuals') }}>
+            <button>
+                Generate visuals for idrop logs
+            </button>
+        </a>
+        </br>
+        </br>
+        <a href="http://192.168.10.254:9090" target="_blank">
+            <button>
+                Open visuals for idrop logs
+            </button>
+        </a>
+        </br>
+        </br>
+        </br>
+        </br>
+        </br>
+        </br>
+        <a href={{ url_for('query.logDelete') }}>
+            <button class="red">
+                Delete idrop logs
+            </button>
+        </a>
+        <a href={{ url_for('index') }} style="position:absolute; bottom:10px; right:10px;">
+            <button>
+                Click here to return to Main menu
+            </button>
+        </a>
+    </body>
+</html>

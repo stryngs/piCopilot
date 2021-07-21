@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+## Deal with supervisor
+systemctl start supervisor
+
+## Cleanup
+rm -rf /opt/piCopilot-unmanned

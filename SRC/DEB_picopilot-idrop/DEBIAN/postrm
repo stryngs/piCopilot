@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+## Start Supervisor daemon
+systemctl start supervisor
+
+## Cleanup idrop scrap
+rm -rf /opt/piCopilot-idrop

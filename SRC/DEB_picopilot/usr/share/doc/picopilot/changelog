@@ -1,0 +1,7 @@
+# 1.2.2
+    - Added licensing and removed starting of supervisor
+# 1.2
+    - Removed hostOn in favor of grep '#' in /etc/network/interfaces.d/wlan0
+
+# 1.0
+    - Initial debut

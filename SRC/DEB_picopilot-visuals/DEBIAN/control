@@ -1,0 +1,8 @@
+Package: picopilot-visuals
+Version: 0.2.0
+Architecture: all
+Depends: picopilot, python3-pandas, python3-dateutil, python3-patsy
+Section: net
+Priority: optional
+Description: Metapackage for idrop visualizations.
+Maintainer: stryngs <info@127.0.0.1>
