@@ -77,16 +77,16 @@ class Main(object):
 
         if toDS & fromDS:
             direc = '11'
-            txrx = packet[Dot11].addr3 + ',' + packet[Dot11].addr4
+            txrx = packet[Dot11].addr4 + ',' + packet[Dot11].addr3
         elif toDS:
             direc = '01'
-            txrx = packet[Dot11].addr3 + ',' + packet[Dot11].addr2
+            txrx = packet[Dot11].addr2 + ',' + packet[Dot11].addr3
         elif fromDS:
             direc = '10'
-            txrx = packet[Dot11].addr1 + ',' + packet[Dot11].addr3
+            txrx = packet[Dot11].addr3 + ',' + packet[Dot11].addr1
         else:
             direc = '00'
-            txrx = packet[Dot11].addr1 + ',' + packet[Dot11].addr2
+            txrx = packet[Dot11].addr2 + ',' + packet[Dot11].addr1 
         ###
 
 
