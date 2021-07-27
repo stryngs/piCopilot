@@ -29,7 +29,7 @@ class Main(object):
                                                                 subtype TEXT,
                                                                 rssi INT,
                                                                 direc TEXT,
-                                                                fcfield INT,
+                                                                txrx TEXT,
                                                                 channel INT,
                                                                 frequency INT);
                                 """)
@@ -76,11 +76,17 @@ class Main(object):
             fromDS = True
 
         if toDS & fromDS:
-            fcField = 'mesh'
+            direc = '11'
+            txrx = packet[Dot11].addr3 + ',' + packet[Dot11].addr4
         elif toDS:
-            fcField = 'to-ds'
+            direc = '01'
+            txrx = packet[Dot11].addr3 + ',' + packet[Dot11].addr2
         elif fromDS:
-            fcField = 'from-ds'
+            direc = '10'
+            txrx = packet[Dot11].addr1 + ',' + packet[Dot11].addr3
+        else:
+            direc = '00'
+            txrx = packet[Dot11].addr1 + ',' + packet[Dot11].addr2
         ###
 
 
@@ -135,7 +141,7 @@ class Main(object):
                                               subtype,
                                               rssi,
                                               direc,
-                                              fcfield,
+                                              txrx,
                                               channel,
                                               frequency)
                                         VALUES (%s,
@@ -172,8 +178,8 @@ class Main(object):
                                   pType,
                                   subType,
                                   fSig,
-                                  fcField,
-                                  int(packet[Dot11].FCfield),
+                                  direc,
+                                  txrx,
                                   fChannel,
                                   fFreq))
 

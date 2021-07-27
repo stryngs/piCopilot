@@ -34,13 +34,13 @@ class Exporter(object):
                         CREATE TEMPORARY TABLE tods AS
                         SELECT addr2, addr3
                         FROM main WHERE type = 'Data'
-                        AND direc = 'to-ds';
+                        AND direc = '01';
                         """)
         self.db.execute("""
                         CREATE TEMPORARY TABLE dsto AS
                         SELECT addr3, addr2
                         FROM main WHERE type = 'Data'
-                        AND direc = 'to-ds';
+                        AND direc = '01';
                         """)
         self.db.execute("""
                         SELECT * FROM tods;
