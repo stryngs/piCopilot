@@ -75,7 +75,7 @@ class Main(object):
         if self.unity.PE.pt.nthBitSet(packet[Dot11].FCfield, 1) is True:
             fromDS = True
 
-        if toDS & fromDS:
+        if fromDS & toDS:
             direc = '11'
             txrx = packet[Dot11].addr4 + ',' + packet[Dot11].addr3
         elif toDS:
@@ -86,7 +86,7 @@ class Main(object):
             txrx = packet[Dot11].addr3 + ',' + packet[Dot11].addr1
         else:
             direc = '00'
-            txrx = packet[Dot11].addr2 + ',' + packet[Dot11].addr1 
+            txrx = packet[Dot11].addr2 + ',' + packet[Dot11].addr1
         ###
 
 

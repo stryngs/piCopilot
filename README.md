@@ -222,8 +222,6 @@ dpkg -i *.deb
 ### Known bug(s)
 * For the page on /, the idrop Service gets confused by the presence of kBlue and how sh.sysMode is used.  When enabling kBlue and returning to the main menu, the idrop Service will now read as kBlue.  This will be worked out in later releases.
     * To force it proper, cycle the idrop service off and then back on.  It will correct by virtue of sh.sysMode flipping through the original idrop logic.
-* kBlue makes use of the Ubertooth by way of ubertooth-btle and reading from a pre-recorded stream.  The streams default to 20 seconds per stream in real-time.  As kBlue currently does not rip stdout for ubertooth-btle, there is no time association just yet.
-    * Every packet within a given burst of packets on a given bluesPipe will have the timestamp until a workaround is found.
 * When downloading idrop logs, the cache gets hung.
     * Clear the cache in history as a workaround.
 

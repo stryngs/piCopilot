@@ -13,6 +13,7 @@ import signal
 import sys
 import psycopg2
 from configparser import ConfigParser
+from easyThread import Backgrounder
 from lib.unifier import Unify
 from scapy.all import *
 from subprocess import Popen
@@ -228,7 +229,8 @@ class Blue(object):
 
 
     def pipePush(self, pipe, sVal):
-        bPipe = os.system('/usr/bin/timeout {0} /usr/bin/ubertooth-btle -f -q {1} 1>/dev/null'.format(sVal, pipe))
+        # bPipe = os.system('/usr/bin/timeout {0} /usr/bin/ubertooth-btle -f -q {1} 1>/dev/null'.format(sVal, pipe))
+        bPipe = os.system('/usr/bin/timeout 0 /usr/bin/ubertooth-btle -f -q "/mnt/usb_storage/bluesPipe-1"')
 
 
     def pgsqlFilter(self):
@@ -311,13 +313,30 @@ class Blue(object):
         self.blinder.unity.seenMaxTimer = self.conf.seenMax
         self.blinder.unity.seenDict = {}
 
-        while True:
-            for pipe in self.availPipes:
-                print('sniffing pipe {0}'.format(pipe))
-                self.pipePush(pipe, self.pipeSleep)
-                p = sniff(offline = '{0}'.format(pipe), prn = self.PRN)
-                time.sleep(.1)
-        con.close()
+        ### Semi real-time
+        # while True:
+        #     for pipe in self.availPipes:
+        #         print('sniffing pipe {0}'.format(pipe))
+        #         self.pipePush(pipe, self.pipeSleep)
+        #         p = sniff(offline = '{0}'.format(pipe), prn = self.PRN)
+        #         time.sleep(.1)
+
+        ### Real-time
+        Backgrounder.theThread = uberThread
+        bg = Backgrounder()
+        bg.easyLaunch()
+        time.sleep(3)                                                           ### Clean this up later
+        sniff(opened_socket = Reader('/mnt/usb_storage/bluesPipe-1'), prn = self.PRN)
+        con.close()                                                             ## This connection never really.... gets closed.
+
+
+
+class Reader(PcapReader):
+    def read_packet(self, size = 65535):                                        ## MTU obj not loaded
+        try:
+            return super(Reader, self).read_packet(size)
+        except EOFError:
+            return None
 
 
 def crtlC(args):
@@ -325,6 +344,11 @@ def crtlC(args):
     def tmp(signal, frame):
         sys.exit(0)
     return tmp
+
+
+def uberThread(self):
+    os.system('/usr/bin/ubertooth-btle -f -q "/mnt/usb_storage/bluesPipe-1" 1>/dev/null')
+
 
 if __name__ == '__main__':
 

@@ -24,3 +24,11 @@ Test filter() for kBlue and kSnarf
 #time.sleep(3)
 #self.cap.entry(packet)
 
+
+
+
+###
+Kismet
+mosh
+kSnarfPsql to include airmon-ng nic mod
+replace current aircrack-ng, airodump-ng busted.
