@@ -224,6 +224,8 @@ dpkg -i *.deb
     * To force it proper, cycle the idrop service off and then back on.  It will correct by virtue of sh.sysMode flipping through the original idrop logic.
 * When downloading idrop logs, the cache gets hung.
     * Clear the cache in history as a workaround.
+* kBlue can cause ubertooth hangs with multiple on/off calls.
+    * Reboot is easiest, but "killall -9 ubertooth-btle" works for the ssh
 
 ### Contacting support
 For help with any of the steps or to inquire how piCopilot can support your integration needs for unmanned systems, please contact via email:

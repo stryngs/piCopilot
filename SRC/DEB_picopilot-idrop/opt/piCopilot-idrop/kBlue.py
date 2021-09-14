@@ -166,8 +166,8 @@ class Blue(object):
         ##Do some filtering to ignore parsing we don't need
         self.onlyCare()
         self.pipeSleep = 20
-        self.availPipes = ['/mnt/usb_storage/bluesPipe-1',
-                           '/mnt/usb_storage/bluesPipe-2']
+        # self.availPipes = ['/mnt/usb_storage/bluesPipe-1',
+        #                    '/mnt/usb_storage/bluesPipe-2']
 
         ## Check for known macs to ignore -- need to use regex...
         if os.path.isfile('ignore.lst'):
@@ -230,7 +230,7 @@ class Blue(object):
 
     def pipePush(self, pipe, sVal):
         # bPipe = os.system('/usr/bin/timeout {0} /usr/bin/ubertooth-btle -f -q {1} 1>/dev/null'.format(sVal, pipe))
-        bPipe = os.system('/usr/bin/timeout 0 /usr/bin/ubertooth-btle -f -q "/mnt/usb_storage/bluesPipe-1"')
+        bPipe = os.system('/usr/bin/timeout 0 /usr/bin/ubertooth-btle -f -q "/mnt/usb_storage/bluesPipe"')
 
 
     def pgsqlFilter(self):
@@ -325,18 +325,19 @@ class Blue(object):
         Backgrounder.theThread = uberThread
         bg = Backgrounder()
         bg.easyLaunch()
-        time.sleep(3)                                                           ### Clean this up later
-        sniff(opened_socket = Reader('/mnt/usb_storage/bluesPipe-1'), prn = self.PRN)
-        con.close()                                                             ## This connection never really.... gets closed.
-
+        time.sleep(10)                                                           ### Clean this up later
+        sniff(opened_socket = Reader('/mnt/usb_storage/bluesPipe'), prn = self.PRN)
+        ### Need to add logging so we know if EOF is an issue
 
 
 class Reader(PcapReader):
     def read_packet(self, size = 65535):                                        ## MTU obj not loaded
         try:
             return super(Reader, self).read_packet(size)
-        except EOFError:
-            return None
+        # except EOFError:
+            # return None
+        except:
+            pass
 
 
 def crtlC(args):
@@ -347,10 +348,26 @@ def crtlC(args):
 
 
 def uberThread(self):
-    os.system('/usr/bin/ubertooth-btle -f -q "/mnt/usb_storage/bluesPipe-1" 1>/dev/null')
+    os.system('/usr/bin/ubertooth-btle -f -q "/mnt/usb_storage/bluesPipe" 1>/dev/null')
 
 
 if __name__ == '__main__':
+
+    """
+    The code as written does not account for file system size on the usb.
+    If continuously ran kBlue will eventually fill up the drive and most likely
+    cause a crash of some sort.
+
+    On the next patch cycle this will be addressed.
+
+    The workaround for the time being is to simply restart kBlue once in a while
+    all based on the size of the drive in use.
+
+    To get an idea of usage in your area you can do something like the following
+    in bash with kBlue running:
+
+    while true; do ls -l /mnt/usb_storage; sleep 5; done
+    """
 
     ## ARGUMENT PARSING
     parser = argparse.ArgumentParser(description = 'kBlue')

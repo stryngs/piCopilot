@@ -28,7 +28,8 @@ def index():
                                system_Mode = 'None',
                                system_Channel = sh.bashReturn(iStr),
                                query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
-                               system_hddAvail = sh.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"),
+                               system_hddAvail = sh.bashReturn("df -h | grep '/dev/root'"),
+                               usb_hddAvail = sh.bashReturn("df -h | grep 'usb_storage'"),
                                system_Time = sh.bashReturn("date"))
     if sh.sysMode == 'kSnarfPsql':
         return render_template('index.html',
@@ -38,6 +39,7 @@ def index():
                                system_Channel = sh.bashReturn(iStr),
                                query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
                                system_hddAvail = sh.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"),
+                               usb_hddAvail = sh.bashReturn("df -h | grep 'usb_storage'"),
                                system_Time = sh.bashReturn("date"))
     if sh.sysMode == 'Off':
         return render_template('index.html',
@@ -47,6 +49,7 @@ def index():
                                system_Channel = sh.bashReturn(iStr),
                                query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
                                system_hddAvail = sh.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"),
+                               usb_hddAvail = sh.bashReturn("df -h | grep 'usb_storage'"),
                                system_Time = sh.bashReturn("date"))
 
     if sh.sysMode == 'kBlue':
@@ -57,6 +60,7 @@ def index():
                                system_Channel = sh.bashReturn(iStr),
                                query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
                                system_hddAvail = sh.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"),
+                               usb_hddAvail = sh.bashReturn("df -h | grep 'usb_storage'"),
                                system_Time = sh.bashReturn("date"))
 
     ## Unexpected prep
@@ -67,6 +71,7 @@ def index():
                            system_Channel = sh.bashReturn(iStr),
                            query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
                            system_hddAvail = sh.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"),
+                           usb_hddAvail = sh.bashReturn("df -h | grep 'usb_storage'"),
                            system_Time = sh.bashReturn("date"))
 ###############################################################################
 
@@ -120,7 +125,7 @@ if __name__ == '__main__':
     ## Gen an empty class to pass around
     class Foo(object):
         pass
-    
+
     ## Setup
     conf = Foo()
     parser = ConfigParser()
@@ -131,7 +136,7 @@ if __name__ == '__main__':
     conf.db = parser.get('creds', 'dbName')
     conf.nic = parser.get('hw', 'nic')
     sh = Shared(conf = conf)
-    
+
     ## Setup timer and link to shared
     tmr = Timer(conf.db, conf.user, conf.host, conf.password)
     sh.tmr = tmr

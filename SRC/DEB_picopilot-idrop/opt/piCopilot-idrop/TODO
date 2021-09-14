@@ -32,3 +32,17 @@ Kismet
 mosh
 kSnarfPsql to include airmon-ng nic mod
 replace current aircrack-ng, airodump-ng busted.
+
+
+cat >> /etc/systemd/system/mosh-server.service <<EOF
+[Unit]
+Description=Mosh Service
+
+[Service]
+ExecStart=/usr/bin/mosh-server
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl enable mosh-server
+systemctl start mosh-server
