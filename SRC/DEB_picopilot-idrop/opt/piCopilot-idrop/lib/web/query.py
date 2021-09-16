@@ -37,11 +37,15 @@ class QUERY(object):
         @self.query.route('/Queries')
         def index():
             #if sh.sysMode = 'None':
-
+            try:
+                usbHDD = sh.bashReturn("df -h /mnt/usb_storage/ | grep 'usb_storage'")
+            except:
+                usbHDD = None
             return render_template('query/index.html',
                                    _kSnarf = self.sh.rlCheck('kSnarfPsql'),
                                    logSize = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
-                                   hddAvail = self.sh.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"))
+                                   hddAvail = self.sh.bashReturn("df -h | grep '/dev/root'"),
+                                   usb_hddAvail = usbHDD)
 ###############################################################################
 
 
@@ -58,10 +62,15 @@ class QUERY(object):
             os.system('chown -R postgres /opt/piCopilot-idrop/logs')
             os.system('chown -R postgres /opt/piCopilot-idrop/downloads')
             self.truncater.truncate()
+            try:
+                usbHDD = sh.bashReturn("df -h /mnt/usb_storage/ | grep 'usb_storage'")
+            except:
+                usbHDD = None
             return render_template('query/index.html',
                                    _kSnarf = self.sh.rlCheck('kSnarfPsql'),
                                    logSize = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
-                                   hddAvail = sh.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"))
+                                   hddAvail = sh.bashReturn("df -h | grep '/dev/root'"),
+                                   usb_hddAvail = usbHDD)
 ###############################################################################
 
 
@@ -92,7 +101,12 @@ class QUERY(object):
             self.plotter.probeReq(rType = 'max')
             self.plotter.probeReq(rType = 'min')
             self.plotter.lDir()
+            try:
+                usbHDD = sh.bashReturn("df -h /mnt/usb_storage/ | grep 'usb_storage'")
+            except:
+                usbHDD = None
             return render_template('query/index.html',
                                    _kSnarf = self.sh.rlCheck('kSnarfPsql'),
                                    logSize = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
-                                   hddAvail = self.sh.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"))
+                                   hddAvail = self.sh.bashReturn("df -h | grep '/dev/root'"),
+                                   usb_hddAvail = usbHDD)
