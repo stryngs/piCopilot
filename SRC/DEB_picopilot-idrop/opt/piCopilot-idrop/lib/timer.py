@@ -27,7 +27,7 @@ class Timer(object):
         self._con = psycopg2.connect(cStr)
         self._con.autocommit = True
         self._db = self._con.cursor()
-                
+
 
     def tMark(self):
         """Timestamp function
@@ -39,7 +39,7 @@ class Timer(object):
         epoch = time.localtime()
         coord = self.loc.getCoord()
         pi_timestamp = time.strftime('%Y-%m-%d %H:%M:%S', epoch)
-        
+
         self._db.execute("""
                          INSERT INTO timer (pi_timestamp,
                                            coord)

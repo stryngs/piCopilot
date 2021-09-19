@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 ## chown for postgres
+mkdir /opt/piCopilot-idrop/visuals
+mkdir /opt/piCopilot-idrop/logs
 chown -R postgres /opt/piCopilot-idrop/logs
 
 ## Start supervisor daemon
