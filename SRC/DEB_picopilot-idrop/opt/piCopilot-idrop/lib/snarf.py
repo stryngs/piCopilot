@@ -1,6 +1,6 @@
 import logging
 import time
-logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
+import sys
 from scapy.all import *
 from lib.parent_modules.k9 import K9
 from lib.parent_modules.probes import Probes
@@ -24,7 +24,7 @@ class Snarf(object):
         ### Eventually backport this
         self.sh = Shared()
         self.sh.unity = self.unity
-        
+
         ## Notate devid and current marker
         dbInstance.db.execute("""
                               SELECT marker FROM main WHERE devid = %s ORDER BY marker DESC LIMIT 1;
@@ -48,13 +48,10 @@ class Snarf(object):
         else:
             self.pHandler = self.snarfOpen
 
-        ## Deal with PCAP storage
-        if self.unity.args.pcap:
-            tStamp = time.strftime('%Y%m%d_%H%M', time.localtime()) + '.pcap'
-            pLog = self.cap.dDir + '/' + tStamp
-            self.pStore = PcapWriter(pLog, sync = True)
-        else:
-            self.pStore = False
+        ## storage if wanted
+        # tStamp = time.strftime('%Y%m%d_%H%M', time.localtime()) + '.pcap'
+        # pLog = self.cap.dDir + '/' + tStamp
+        # self.pStore = PcapWriter(pLog, sync = True)
 
         ## Track unique addr combos
         self.cap.db.execute("""
@@ -174,10 +171,10 @@ class Snarf(object):
                     return False
                 else:
                     #print ('FAIL TIMER')
-                    
+
                     ## Revert the count
                     self.unity.marker -= 1
-                    
+
                     return True
         except:
             pass
@@ -186,7 +183,7 @@ class Snarf(object):
     def sniffer(self):
         def snarf(packet):
             """Sniff the data"""
-            
+
             ## Notate the time
             self.unity.times()
 
@@ -195,8 +192,8 @@ class Snarf(object):
                 if self.whiteLister(self.unity.wSet, packet) is False:
                     if self.seenTest(packet) is False:
                         self.pHandler(packet)
-                        if self.pStore is not False:
-                            self.pStore.write(packet)
+                        ## storage if wanted
+                        # self.pStore.write(packet)
                     else:
                         return
                 else:
@@ -204,8 +201,8 @@ class Snarf(object):
             else:
                 if self.seenTest(packet) is False:
                     self.pHandler(packet)
-                    if self.pStore is not False:
-                        self.pStore.write(packet)
+                    ## storage if wanted
+                    # self.pStore.write(packet)
                 else:
                     return
         return snarf

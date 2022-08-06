@@ -114,7 +114,11 @@ def timeSync():
     i1 = "iwlist {0} channel | grep Current | ".format(sh.conf.nic)
     i2 = "awk '{print $5}' | cut -d\) -f1| tail -n 1"
     iStr = i1 + i2
+
+    ### DEBUG
+    ## Modify as needed if not running in a conventional setup
     os.system('/bin/bash /opt/piCopilot-scripts/timeSync.sh')
+
     return render_template('index.html',
                            kBlue_Service = sh.rlCheck('kBlue'),
                            system_Service = sh.sysMode,

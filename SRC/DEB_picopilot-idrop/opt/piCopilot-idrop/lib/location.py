@@ -1,4 +1,7 @@
-import gpsd
+try:
+    import gpsd
+except:
+    pass
 
 class Location(object):
 

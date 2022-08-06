@@ -1,7 +1,14 @@
 import csv
 import os
-import psycopg2
 import sys
+
+## pypy3 seamless merge
+try:
+    from psycopg2cffi import compat
+    compat.register()
+except:
+    pass
+import psycopg2
 
 class Exporter(object):
     """All things sql export"""

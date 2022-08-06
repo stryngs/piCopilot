@@ -3,7 +3,7 @@
 from flask import Blueprint, render_template, request
 import os, time
 
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 import subprocess
 from datetime import datetime
 import time

@@ -127,6 +127,12 @@ mount /dev/sda2
 
 5. You may now plug in an Ubertooth (Optional)
 
+### GPS integration (Optional)
+piCopilot has the ability to notate GPS location.  Depending on the USB devices plugged into piCopilot you may need to tweak /etc/default/gpsd.  The GPS is enabled by way of opening a shell and then:
+```
+systemctl enable gpsd
+systemctl start gpsd
+```
 
 ### Grafana visualizations (Optional)
 Setup Grafana and visualize your findings

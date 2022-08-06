@@ -1,6 +1,7 @@
 import os
 import netaddr
 import packetEssentials as PE
+import psutil
 import re
 import time
 from lib.location import Location
@@ -12,6 +13,10 @@ class Unify(object):
         self.epoch = None
         self.coord = None
         self.loc = Location()
+
+        ## Custom init starts here
+        ## blah
+        ## Custom init ends here
 
         ## Set the orig timestamp
         self.origTime = int(time.time())
@@ -32,10 +37,12 @@ class Unify(object):
 
             ## Grab the OS control object
             self.control = control
+
             if conf.mode != 'ids':
                 ## Set the driver
                 self.iwDriver = driver
 
+                ### Can we get away with native scapy here?
                 ## Notate driver offset
                 self.PE = PE
                 self.offset = self.PE.drv.drivers(self.iwDriver)
@@ -65,6 +72,13 @@ class Unify(object):
             return parsed_oui.oui.registration().org
         except netaddr.core.NotRegisteredError:
             return None
+
+
+    def parachute(self):
+        """Problem detected, pull out!"""
+        for i in psutil.process_iter():
+            if 'kSnarf.py' in ' '.join(i.cmdline()):
+                i.kill()
 
 
     def times(self):

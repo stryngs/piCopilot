@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 import subprocess
 import time
 from datetime import datetime

@@ -85,8 +85,16 @@ class Main(object):
             direc = '10'
             txrx = packet[Dot11].addr3 + ',' + packet[Dot11].addr1
         else:
+            if packet[Dot11].addr2 is None:
+                foo = ''
+            else:
+                foo = packet[Dot11].addr2
+            if packet[Dot11].addr1 is None:
+                bar = ''
+            else:
+                bar = packet[Dot11].addr1
             direc = '00'
-            txrx = packet[Dot11].addr2 + ',' + packet[Dot11].addr1
+            txrx = foo + ',' + bar
         ###
 
 

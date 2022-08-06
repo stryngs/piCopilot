@@ -1,28 +1,46 @@
 #!/usr/bin/python3
 
 import argparse
+import hashlib
+import json
 import logging
-import psycopg2
+import os
+import psutil
 import signal
 import sys
+import time
 from configparser import ConfigParser
 from easyThread import Backgrounder
 from lib.dbControl import Builder
 from lib.unifier import Unify
-logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from scapy.all import *
+from threading import Thread
+
+## pypy3
+try:
+    from psycopg2cffi import compat
+    compat.register()
+except:
+    pass
+import psycopg2
+
+## Custom imports start here
+## blah
+## Custom imports end here
+
+## Custom functions start here
+## blah
+## Custom functions end here
 
 def crtlC(cap, unity):
     """Handle CTRL+C."""
     def tmp(signal, frame):
         print('\nTrying to stop gracefully')
-        #cap.con.commit()
         cap.con.close()
-        try:
-            unity.conBeat.close()
-        except:
-            print('Could not close heartbeat connection')
-        sys.exit(0)
+        unity.conBeat.close()
+        for i in psutil.process_iter():
+            if 'kSnarf.py' in ' '.join(i.cmdline()):
+                i.kill()
     return tmp
 
 
@@ -70,10 +88,14 @@ def main(args):
                 control = Control(conf.nic, chanList = conf.channels.split(), interval = conf.hop)
         unity = Unify(args, control = control, driver = conf.drv, conf = conf)
     else:
-        unity = Unify(args)
+        unity = Unify(args, conf = conf)
 
     ## Setup quiet time for packets
     unity.seenMaxTimer = conf.seenMax
+
+    ## ids integrations start here
+    ## blah
+    ## ids integrations end here
 
     ## Instantiate the DB
     cap = Builder(unity)
@@ -88,45 +110,30 @@ def main(args):
     else:
         pArgs = None
 
+    ## snarf integrations start here
     ## Create the snarf instance that holds the database
     snarf = Snarf(cap, unity, pArgs)
+    ## snarf integrations end here
 
-    ## Active sniffing
+    ## Active sniffing starts here
     if args.r is None:
         ### Perhaps switch logic to lfilter
         ### For now the logic is in sniffer method
 
-        ## Listen with no target
-        if conf.mode == 'listen':
-            print('RUNNING')
-            if args.w is not None:
-                with open(args.w, 'r') as iFile:
-                    wList = iFile.read().splitlines()
-                unity.wSet = set()
-                for i in wList:
-                    unity.wSet.add(i.lower().strip())
-                    unity.wSet = iFile.read().splitlines()
-                unity.wSet.discard('')
+        print('RUNNING')
+        if args.w is not None:
+            with open(args.w, 'r') as iFile:
+                wList = iFile.read().splitlines()
+            unity.wSet = set()
+            for i in wList:
+                unity.wSet.add(i.lower().strip())
+                unity.wSet = iFile.read().splitlines()
+            unity.wSet.discard('')
 
-            ## go
-            pHandler = snarf.sniffer()
-            sniff(iface = conf.nic, prn = pHandler, store = 0)
-
-        ## ids
-        if conf.mode == 'ids':
-
-            ## Add our function to Backgrounder and kick off a heartbeat
-            Backgrounder.theThread = snarf.hb.heartRhythm
-
-            ## Instantiate using #s other than defaults
-            bg = Backgrounder()
-
-            ## Start the heartbeat
-            bg.easyLaunch()
-
-            ## Continue with a sniff
-            pHandler = snarf.liveSniff()
-            sniff(iface = conf.nic, prn = pHandler, filter = 'udp port 514 and host {0}'.format(args.fwip), store = 0)
+        ## go
+        pHandler = snarf.sniffer()
+        sniff(iface = conf.nic, prn = pHandler, store = 0)
+    ## Active sniffing stops here
 
     ## PCAP reading
     else:
@@ -142,7 +149,11 @@ def main(args):
 
 
 if __name__== '__main__':
-    parser = argparse.ArgumentParser(description = 'kSnarf - FOSS Intelligence Gathering of the 802.11 spectrum',
+    ## Custom logging starts here
+    ## blah
+    ## Custom logging ends here
+
+    parser = argparse.ArgumentParser(description = 'kSnarf - FOSS Intelligence Gathering of the RF spectrum',
                                      prog = 'kSnarf')
     parser.add_argument('-e',
                         help = 'exclusions',
@@ -152,18 +163,13 @@ if __name__== '__main__':
     parser.add_argument('-w',
                         help = 'whitelist')
     parser.add_argument('--beat',
-                        help = 'Heartbeat timing')
-    parser.add_argument('--fwip',
-                        help = 'Firewall ip to listen for syslog')
-    parser.add_argument('--pcap',
                         action = 'store_true',
-                        help = 'Write a pcap for any non-excluded frames')
-    parser.add_argument('--recover',
-                        action = 'store_true',
-                        help = 'PSQL recovery mode to not start new for tuple')
-    parser.add_argument('--wipe',
-                        action = 'store_true',
-                        help = 'drop all PSQL tables')
-    args = parser.parse_args()
+                        help = 'heartbeats')
 
+    ## Custom args start here
+    ## blah
+    ## Custom args end here
+
+    ## Launch
+    args = parser.parse_args()
     main(args)

@@ -33,16 +33,6 @@ class Builder(object):
                 self.con = psycopg2.connect(cStr)
                 self.con.autocommit = True
                 self.db = self.con.cursor()
-
-                ## Test for wipe
-                if self.unity.args.wipe is True:
-                    self.db.execute('DROP TABLE IF EXISTS main;')
-                    self.db.execute('DROP TABLE IF EXISTS probes;')
-                    self.db.execute('DROP TABLE IF EXISTS uniques;')
-                    self.db.execute('DROP TABLE IF EXISTS blue;')
-                    self.con.close()
-                    print('Tables dropped\n  [+] Exiting\n')
-                    sys.exit(0)
             except Exception as E:
                 print(E)
                 sys.exit(1)
@@ -52,14 +42,6 @@ class Builder(object):
                 self.con = psycopg2.connect(cStr)
                 self.con.autocommit = True
                 self.db = self.con.cursor()
-
-                ## Test for wipe
-                if self.unity.args.wipe is True:
-                    self.db.execute('DROP TABLE IF EXISTS ids;')
-                    self.db.execute('DROP TABLE IF EXISTS heartbeats;')
-                    self.con.close()
-                    print('Tables dropped\n  [+] Exiting\n')
-                    sys.exit(0)
             except Exception as E:
                 print(E)
                 sys.exit(1)
