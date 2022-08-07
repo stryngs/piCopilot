@@ -51,7 +51,7 @@ fi
 }
 
 ### main
-date -s "Fri, 1 Jan 2021 00:00:00 -0000" ## Hardcoded for the year 2021 as a workaround to the gpsd problem where the time is incorrect
+date -s "Mon, 1 Aug 2022 00:00:00 -0000" ## Hardcoded as a workaround to the gpsd problem where the time is incorrect
 gpsUnload--
 gpsLoad--
 timeSync--
