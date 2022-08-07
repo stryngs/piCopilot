@@ -95,6 +95,10 @@ def timeClick():
     i1 = "iwlist {0} channel | grep Current | ".format(sh.conf.nic)
     i2 = "awk '{print $5}' | cut -d\) -f1| tail -n 1"
     iStr = i1 + i2
+    try:
+        usbHDD = sh.bashReturn("df -h /mnt/usb_storage/ | grep 'usb_storage'")
+    except:
+        usbHDD = None
     return render_template('index.html',
                            kBlue_Service = sh.rlCheck('kBlue'),
                            system_Service = sh.sysMode,
@@ -114,6 +118,10 @@ def timeSync():
     i1 = "iwlist {0} channel | grep Current | ".format(sh.conf.nic)
     i2 = "awk '{print $5}' | cut -d\) -f1| tail -n 1"
     iStr = i1 + i2
+    try:
+        usbHDD = sh.bashReturn("df -h /mnt/usb_storage/ | grep 'usb_storage'")
+    except:
+        usbHDD = None
 
     ### DEBUG
     ## Modify as needed if not running in a conventional setup
