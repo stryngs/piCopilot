@@ -51,7 +51,7 @@ fi
 }
 
 ### main
-date -s "Mon, 1 Aug 2022 00:00:00 -0000" ## Hardcoded as a workaround to the gpsd problem where the time is incorrect
+date -s "Sat, 1 Oct 2022 00:00:00 -0000" ## Hardcoded as a workaround to the gpsd problem where the time is incorrect
 gpsUnload--
 gpsLoad--
 timeSync--

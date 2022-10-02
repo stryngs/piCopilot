@@ -16,7 +16,8 @@ class Hopper(object):
     def __init__(self, controlObj):
         self.controlObj = controlObj
         thread = threading.Thread(target = self.controlObj.chanHop,
-                                  args = (self.controlObj.chanList, self.controlObj.interval))
+                                  args = (self.controlObj.chanList,
+                                          self.controlObj.interval))
         thread.daemon = True
         thread.start()
 
@@ -42,7 +43,7 @@ class Control(object):
 
     def chanHop(self, chanList, interval):
         """Hop to channel based on chanList
-        
+
         Jumbles the list for a scattershot approach while staying within the
         boundaries of the requested channels per cycle.
         """
@@ -71,13 +72,3 @@ class Control(object):
                               stdin = p2.stdout,
                               stdout = subprocess.PIPE)
         return p3.communicate()[0].strip()
-
-
-    def iwDriver(self):
-        """Determine driver in use"""
-        p1 = subprocess.Popen(split("grep 'DRIVER=' '/sys/class/net/%s/device/uevent'" % self.nic),
-                              stdout = subprocess.PIPE)
-        p2 = subprocess.Popen(split('cut -d= -f2'),
-                              stdin = p1.stdout,
-                              stdout = subprocess.PIPE)
-        return p2.communicate()[0].strip()

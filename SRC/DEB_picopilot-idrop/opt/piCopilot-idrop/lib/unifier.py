@@ -9,7 +9,7 @@ from lib.location import Location
 class Unify(object):
     """This class acts a singular point of contact for tracking purposes"""
 
-    def __init__(self, args, control = None, kBlue = None, driver = None, conf = None):
+    def __init__(self, args, control = None, kBlue = None, conf = None):
         self.epoch = None
         self.coord = None
         self.loc = Location()
@@ -37,15 +37,7 @@ class Unify(object):
 
             ## Grab the OS control object
             self.control = control
-
-            if conf.mode != 'ids':
-                ## Set the driver
-                self.iwDriver = driver
-
-                ### Can we get away with native scapy here?
-                ## Notate driver offset
-                self.PE = PE
-                self.offset = self.PE.drv.drivers(self.iwDriver)
+            self.PE = PE
 
         ## Setup base
         self.baseDir = os.getcwd()
@@ -53,8 +45,14 @@ class Unify(object):
         # Grab OUIs
         print ('Loading OUIs')
         self.ouiDict = {}
-        with open(self.baseDir + '/lib/support/oui.txt', 'r') as iFile:
-            ouiRows = iFile.read().splitlines()
+
+        try:
+            with open(self.baseDir + '/lib/support/oui.txt', 'r', encoding = 'UTF-8') as iFile:
+                ouiRows = iFile.read().splitlines()
+        except:
+            ouiRows = []
+            print('OUIs empty')
+
         for i in ouiRows:
             oui = re.findall('(.*)\s+\(hex\)\s+(.*)', i)
             if len(oui) == 1:

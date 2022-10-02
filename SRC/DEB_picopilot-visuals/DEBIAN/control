@@ -1,5 +1,5 @@
 Package: picopilot-visuals
-Version: 0.2.2
+Version: 0.2.4
 Architecture: all
 Depends: picopilot
 Section: net

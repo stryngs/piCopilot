@@ -1,6 +1,26 @@
 # kSnarf
-kSnarf was conceived as a tool for FOSS Intelligence Gathering of the 802.11 spectrum.</br></br>
-kSnarf is not the first of it's kind.  Many other such tools do the exact same thing.</br></br>
-The idea behind kSnarf is to keep it alive as a project and community asset.</br>
-FOSS tools like kSnarf start off initially strong, but then support dies for them.  So long as this repo exists, kSnarf will be considered under active development and PRs are highly encouraged.</br></br>
-This initial release is more of a proof of concept than anything.  Modules are being actively developed, but have yet to be released.  When they are ready, they will be pushed accordingly.
+kSnarf operates in Linux for extracting various intelligence correlation data points.  Those gathered points can be monitored in real time or for a period of time in the past.
+
+The default usage for kSnarf is aimed at wireless traffic and works with any network card so long as it can drop to monitor mode at a minimum.  [piCopilot](https://github.com/stryngs/piCopilot#lessons-learned-from-tools-like-picopilot) is one such tool leveraging kSnarf in this manner.
+
+kSnarf has an experimental Bluetooth module called kBlue which leverages the [Ubertooth One](https://greatscottgadgets.com/ubertoothone/).  
+
+Private modules are available upon [request](https://gitter.im/ICSec/kSnarf)  for supporting Ethernet style traffic and other such IDS or IPS type needs.
+
+# Getting started
+Install PostgreSQL locally
+Modify ./system.conf if nothing else to ensure prop.nic makes sense, by default prop.nic is set to wlan1mon.
+```sql
+CREATE ROLE root WITH SUPERUSER LOGIN;
+ALTER USER root WITH PASSWORD 'idrop';
+CREATE DATABASE idrop;
+```
+```bash
+sudo python3 ./kSnarf.py
+```
+```bash
+sudo psql idrop
+```
+```sql
+SELECT * FROM main;
+```

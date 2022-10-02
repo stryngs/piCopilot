@@ -25,7 +25,8 @@ from MAVProxy.modules.lib import dumpstacks
 try:
       from multiprocessing import freeze_support
       from pymavlink import mavwp, mavutil
-      import matplotlib, HTMLParser
+      # import matplotlib, HTMLParser
+      import HTMLParser
       try:
             import readline
       except ImportError:
@@ -525,7 +526,7 @@ def process_master(m):
         sys.stdout.write(str(s))
         sys.stdout.flush()
         return
-    
+
     global mavversion
     if m.first_byte and mavversion == None:
         m.auto_mavlink_version(s)
@@ -867,7 +868,7 @@ def run_script(scriptfile):
             mpstate.console.writeln("-> %s" % line)
         process_stdin(line)
     f.close()
-    
+
 def set_mav_version(mav10, mav20, autoProtocol, mavversionArg):
     '''Set the Mavlink version based on commandline options'''
 #    if(mav10 == True or mav20 == True or autoProtocol == True):

@@ -12,6 +12,3 @@ systemctl enable supervisor
 ## Ensure postgresql running
 systemctl enable postgresql
 systemctl start postgresql
-
-## Setup officeTasks
-pip3 install /opt/storage_piCopilot-idrop/officeTasks-1.4.6.tar.gz

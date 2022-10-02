@@ -59,8 +59,7 @@ def main(args):
     conf.host = parser.get('creds', 'dbHost')
     conf.db = parser.get('creds', 'dbName')
     conf.devid = int(parser.get('creds', 'devid'))
-    conf.nic = parser.get('hw', 'nic')
-    conf.drv = parser.get('hw', 'drv')
+    conf.nic = parser.get('prop', 'nic')
     conf.seenMax = int(parser.get('prop', 'seenMax'))
     conf.protocols = parser.get('prop', 'protocols')
     conf.channels = parser.get('prop', 'channels')
@@ -86,7 +85,7 @@ def main(args):
             ## Hop time defined
             else:
                 control = Control(conf.nic, chanList = conf.channels.split(), interval = conf.hop)
-        unity = Unify(args, control = control, driver = conf.drv, conf = conf)
+        unity = Unify(args, control = control, conf = conf)
     else:
         unity = Unify(args, conf = conf)
 
@@ -165,6 +164,9 @@ if __name__== '__main__':
     parser.add_argument('--beat',
                         action = 'store_true',
                         help = 'heartbeats')
+    parser.add_argument('--wipe',
+                        action = 'store_true',
+                        help = 'DB wipe')
 
     ## Custom args start here
     ## blah

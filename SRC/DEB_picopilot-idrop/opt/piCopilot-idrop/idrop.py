@@ -153,7 +153,7 @@ if __name__ == '__main__':
     conf.password = parser.get('creds', 'dbPass')
     conf.host = parser.get('creds', 'dbHost')
     conf.db = parser.get('creds', 'dbName')
-    conf.nic = parser.get('hw', 'nic')
+    conf.nic = parser.get('prop', 'nic')
     sh = Shared(conf = conf)
 
     ## Setup timer and link to shared

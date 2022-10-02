@@ -1,3 +1,4 @@
 #!/bin/bash
 #./mavproxy.py --out 192.168.10.10:14550 --baudrate 921600 --aircraft myVehicle --load-module lib.gpsProxy --master /dev/ttyS0
-mavproxy.py --out 192.168.10.10:14550 --baudrate 921600 --aircraft myVehicle --master /dev/ttyUSB0
+# mavproxy.py --out 192.168.10.10:14550 --baudrate 921600 --aircraft myVehicle --master /dev/ttyUSB0
+mavproxy.py --out 192.168.10.10:14550 --baudrate 921600 --aircraft myVehicle --master /dev/ttyACM0
