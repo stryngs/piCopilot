@@ -1,5 +1,5 @@
 Package: picopilot
-Version: 1.4.0
+Version: 1.4.2
 Architecture: all
 Description: piCopilot provides autonomous functionality for the Raspberry Pi.
 Maintainer: stryngs <info@127.0.0.1>
