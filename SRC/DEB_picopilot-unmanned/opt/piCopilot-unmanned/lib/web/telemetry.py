@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Blueprint, render_template, request
+from pymavlink import mavutil
 import os, time
 
 class TELEMETRY(object):
@@ -64,7 +65,6 @@ class TELEMETRY(object):
             else:
                 if self.mc.telemetryServiceControl == 'On':
                     self.mc.svControl('start', 'telemetry_Service')
-
             return render_template('telemetry/index.html',
                                    serviceStatus = self.mc.svCheck('telemetry_Service'))
 
@@ -74,15 +74,14 @@ class TELEMETRY(object):
             """Turn the Telemetry Off"""
             if self.mc.svCheck('telemetry_Service') == 'RUNNING':
                 self.mc.svControl('stop', 'telemetry_Service')
-
             return render_template('telemetry/index.html',
                                    serviceStatus = self.mc.svCheck('telemetry_Service'))
+
 
         @self.telemetry.route('/Telemetry/___Service-ON')
         def serviceON():
             """Turn the Telemetry On"""
             if self.mc.svCheck('telemetry_Service') != 'RUNNING':
                 self.mc.svControl('start', 'telemetry_Service')
-
             return render_template('telemetry/index.html',
                                    serviceStatus = self.mc.svCheck('telemetry_Service'))

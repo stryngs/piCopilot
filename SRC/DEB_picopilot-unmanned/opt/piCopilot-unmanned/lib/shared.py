@@ -1,4 +1,5 @@
 import subprocess
+import time
 
 class Multi(object):
     """Useful for passing information"""
@@ -41,3 +42,18 @@ class Multi(object):
         """Return teh bash"""
         return subprocess.check_output(cmd,
                                        shell = True).decode().strip()
+
+
+   def videoStop():
+       """Hard stop on GStreamer or Motion"""
+        try:
+            self.bashReturn('killall -9 raspivid')
+        except:
+            pass
+        try:
+            self.bashReturn('systemctl stop motion')
+            time.sleep(1)
+            self.bashReturn('systemctl stop motioneye')
+        except:
+            pass
+        time.sleep(1)

@@ -84,7 +84,7 @@
         </br>
         </br>
         </br>
-        <a href={{ url_for('video.gstreamerStop') }}>
+        <a href={{ url_for('video.videoStop') }}>
             <button>
                 Video Off
             </button>
@@ -93,22 +93,30 @@
         </br>
         <a href={{ url_for('video.gstreamerStart') }}>
             <button>
-                640x480 Video
+                GStreamer - 640x480 Video
             </button>
         </a>
         </br>
         </br>
         <a href={{ url_for('video.gstreamerStartII') }}>
             <button>
-                800x600 Video
+                GStreamer - 800x600 Video
             </button>
         </a>
         </br>
         </br>
         <a href={{ url_for('video.gstreamerStartIII') }}>
             <button>
-                1280x720 Video
+                GStreamer - 1280x720 Video
             </button>
         </a>
+      </a>
+      </br>
+      </br>
+      <a href={{ url_for('video.motionStart') }}>
+          <button>
+              Motion Video
+          </button>
+      </a>
     </body>
 </html>

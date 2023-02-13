@@ -36,56 +36,6 @@ class VIDEO(object):
 ###############################################################################
 
         ## Button pushes
-        # @self.video.route('/Motion-Start')
-        # def motionStart():
-        #
-        #     ### Class this out
-        #     try:
-        #         if self.mc.hostAPD is True:
-        #             hostStatus = 'Active'
-        #         else:
-        #             hostStatus = 'Inactive'
-        #     except:
-        #         hostStatus = 'Inactive'
-        #
-        #     mc.svControl('start', 'motionPrep')
-        #     return render_template('index.html',
-        #                         telem_Service = mc.svCheck('telemetry_Service'),
-        #                         system_bridgeStatus = mc.bashReturn('systemctl status apache2 | grep "Active:" | cut -d: -f2 | cut -d\( -f1'),
-        #                         system_logSize = mc.logSize(),
-        #                         system_hddAvail = mc.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"),
-        #                         video_Type = mc.svCheck('blah', True),
-        #                         hostNic = mc.bashReturn('grep interface /etc/hostapd/hostapd.conf').split('=')[1],
-        #                         hostStatus = hostStatus)
-
-        @self.video.route('/GStreamer_Off')
-        def gstreamerStop():
-
-            ### Class this out
-            try:
-                if mc.hostAPD is True:
-                    hostStatus = 'Active'
-                else:
-                    hostStatus = 'Inactive'
-            except:
-                hostStatus = 'Inactive'
-
-            ## Kill any others
-            try:
-                mc.bashReturn('killall -9 raspivid')
-            except:
-                pass
-
-            return render_template('index.html',
-                                   telem_Service = mc.svCheck('telemetry_Service'),
-                                   system_bridgeStatus = mc.bashReturn('systemctl status apache2 | grep "Active:" | cut -d: -f2 | cut -d\( -f1'),
-                                   system_logSize = mc.logSize(),
-                                   system_hddAvail = mc.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"),
-                                   video_Type = mc.svCheck('blah', True),
-                                   hostNic = mc.bashReturn('grep interface /etc/hostapd/hostapd.conf').split('=')[1],
-                                   hostStatus = hostStatus)
-
-
         @self.video.route('/GStreamer_640x480')
         def gstreamerStart():
 
@@ -98,11 +48,8 @@ class VIDEO(object):
             except:
                 hostStatus = 'Inactive'
 
-            ## Kill any others
-            try:
-                mc.bashReturn('killall -9 raspivid')
-            except:
-                pass
+            ## Stop GStreaner and Motion
+            mc.videoStop()
 
             ## Start
             mc.svControl('start', 'gsPrep')
@@ -128,11 +75,8 @@ class VIDEO(object):
             except:
                 hostStatus = 'Inactive'
 
-            ## Kill any others
-            try:
-                mc.bashReturn('killall -9 raspivid')
-            except:
-                pass
+            ## Stop GStreaner and Motion
+            mc.videoStop()
 
             ## Start
             mc.svControl('start', 'gsPrepII')
@@ -158,11 +102,8 @@ class VIDEO(object):
             except:
                 hostStatus = 'Inactive'
 
-            ## Kill any others
-            try:
-                mc.bashReturn('killall -9 raspivid')
-            except:
-                pass
+            ## Stop GStreaner and Motion
+            mc.videoStop()
 
             ## Start
             mc.svControl('start', 'gsPrepIII')
@@ -193,6 +134,32 @@ class VIDEO(object):
                                        logSize = self.mc.logSize(),
                                        bridgeStatus = self.mc.bashReturn('systemctl status apache2 | grep "Active:" | cut -d: -f2 | cut -d\( -f1'),
                                        hddAvail = mc.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"))
+
+
+        @self.video.route('/Motion')
+        def motionStart():
+
+            ### Class this out
+            try:
+                if self.mc.hostAPD is True:
+                    hostStatus = 'Active'
+                else:
+                    hostStatus = 'Inactive'
+            except:
+                hostStatus = 'Inactive'
+
+            ## Stop GStreaner and Motion
+            mc.videoStop()
+
+            mc.svControl('start', 'motionPrep')
+            return render_template('index.html',
+                                telem_Service = mc.svCheck('telemetry_Service'),
+                                system_bridgeStatus = mc.bashReturn('systemctl status apache2 | grep "Active:" | cut -d: -f2 | cut -d\( -f1'),
+                                system_logSize = mc.logSize(),
+                                system_hddAvail = mc.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"),
+                                video_Type = mc.svCheck('blah', True),
+                                hostNic = mc.bashReturn('grep interface /etc/hostapd/hostapd.conf').split('=')[1],
+                                hostStatus = hostStatus)
 ###############################################################################
 
 
