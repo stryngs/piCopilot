@@ -8,3 +8,4 @@ pip3 uninstall rc4 -y
 pip3 uninstall scapy -y
 pip3 uninstall easy-thread -y
 pip3 uninstall quickset -y
+pip3 uninstall airpwn-ng -y

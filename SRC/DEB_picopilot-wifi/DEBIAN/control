@@ -1,5 +1,5 @@
 Package: picopilot-wifi
-Version: 1.6
+Version: 1.6.2
 Architecture: all
 Description: WiFi meta-package for piCopilot.
 Maintainer: stryngs <info@127.0.0.1>
