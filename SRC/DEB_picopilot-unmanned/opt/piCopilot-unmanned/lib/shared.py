@@ -44,8 +44,8 @@ class Multi(object):
                                        shell = True).decode().strip()
 
 
-   def videoStop():
-       """Hard stop on GStreamer or Motion"""
+    def videoStop(self):
+        """Hard stop on GStreamer or Motion"""
         try:
             self.bashReturn('killall -9 raspivid')
         except:

@@ -63,6 +63,31 @@ class VIDEO(object):
                                    hostStatus = hostStatus)
 
 
+            ## video stopping
+        @self.video.route('/videoStop')
+        def videoStop():
+
+            ## Stop GStreaner and Motion
+            mc.videoStop()
+
+            ### Class this out
+            try:
+                if mc.hostAPD is True:
+                    hostStatus = 'Active'
+                else:
+                    hostStatus = 'Inactive'
+            except:
+                hostStatus = 'Inactive'
+            return render_template('index.html',
+                                   telem_Service = mc.svCheck('telemetry_Service'),
+                                   system_bridgeStatus = mc.bashReturn('systemctl status apache2 | grep "Active:" | cut -d: -f2 | cut -d\( -f1'),
+                                   system_logSize = mc.logSize(),
+                                   system_hddAvail = mc.bashReturn("df -h | grep '/dev/root' | awk '{print $4}'"),
+                                   video_Type = mc.svCheck('blah', True),
+                                   hostNic = mc.bashReturn('grep interface /etc/hostapd/hostapd.conf').split('=')[1],
+                                   hostStatus = hostStatus)
+
+
         @self.video.route('/GStreamer_800x600')
         def gstreamerStartII():
 
