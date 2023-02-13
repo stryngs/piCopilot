@@ -17,5 +17,3 @@ GPIO.output(18, GPIO.HIGH)
 btnPress = GPIO.wait_for_edge(pin, GPIO.RISING, bouncetime = 200)
 if btnPress is not None:
     subprocess.call(['shutdown', '-h', 'now'], shell = False)
-
-### PIN 23 for GREEN
