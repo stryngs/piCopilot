@@ -1,8 +1,0 @@
-Package: picopilot-visuals
-Version: 0.2.4
-Architecture: all
-Depends: picopilot
-Section: net
-Priority: optional
-Description: Metapackage for idrop visualizations.
-Maintainer: stryngs <info@127.0.0.1>

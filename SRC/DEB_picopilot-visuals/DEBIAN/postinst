@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-## Install requirements
-python3 -m pip install /opt/piCopilot-visuals/storage/*
