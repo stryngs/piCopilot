@@ -2,7 +2,7 @@
 piCopilot is 100% feedback driven.  If you like piCopilot and wish to contribute, simply fork and PR; or raise an issue.
 
 ## What is piCopilot
-piCopilot is an ecosystem for autonomous workflows.  It has been tailored for the world of unmanned Intelligence, Surveillance and Reconnaissance.  Whether acting as an assistant during air, land or sea missions, tracking Wi-Fi and Bluetooth signals, kinetic interaction with objects, optical monitoring, or some other interesting integration; piCopilot stands ready to assist the operator with whatever may come.
+piCopilot is an ecosystem for autonomous workflows.  It has been tailored for the world of unmanned Intelligence, Surveillance and Reconnaissance.  Whether acting as an assistant during air, land or sea missions, tracking Wi-Fi and Bluetooth signals, optical monitoring, or some other interesting integration; piCopilot stands ready to assist the operator with whatever may come.
 
 The Wi-Fi and Bluetooth monitoring capabilities of piCopilot may not be legal for use in every Country or locality.  Ensure that you check the rules and regulations for where you will be operating prior to use.  The operator is fully and wholly responsible for any legal and/or civil issues that may arise from their usage of piCopilot.
 
@@ -172,19 +172,28 @@ aa:bb:cc:dd:ee:ff My lost cell phone
 The picopilot-unmanned package has been pre-installed as part of the 20200824 release.  In an effort to make the best of both idrop and the unmanned platform in a single image, the decision was made to have the controller running -- but none of the unmanned core services turned on.  The following files are of interest to anyone who wants to have the core services turned on at boot:
 * /etc/supervisor/conf.d/gsPrep.conf
 * /etc/supervisor/conf.d/motionPrep.conf
-* /etc/supervisor/telemetry_Service.conf
+* /etc/systemd/system/mavproxy.service
 
-piCopilot has been tested and verified with the Pixhawk IMU.  The unmanned package works seemlessly with either QGroundControl or Mission Planner.  For further information on both Ground Control Systems, please refer to their respective websites:
+piCopilot has been tested and verified with the Pixhawk IMU.  The unmanned package works seamlessly with either QGroundControl or Mission Planner.  For further information on both Ground Control Systems, please refer to their respective websites:
 * http://qgroundcontrol.com/
 * https://ardupilot.org/planner/
 
 piCopilot expect the GCS to have a statically set IP Address of 192.168.10.10/24 for UAV purposes.
 
 ### Connecting piCopilot to the Internet (Optional)
-* piCopilot wants to be on a 192.168.10.254/24
-* Modify /etc/wpa_supplicant/wpa_supplicant.conf accordingly
-* Remove the # in /etc/network/interfaces.d/wlan0
 * Give /etc/resolv.conf a nameserver
+* run modWLAN and then reboot
+  ```
+  #modWLAN 'yourNetwork' 'yourPassword' 'Static IP for the Pi' 'netmask' 'gateway'
+  modWLAN 'myHome' 'password' '192.168.73.202' '255.255.255.0' '192.168.73.1'
+  ```
+
+### Changing the self-hosted Access Point (Optional)
+By default piCopilot runs on channel 11 using a 192.168.10.254.  If you have used modWLAN or want to simply change the AP settings run modHOSTAPD and then reboot.
+  ```
+  #modHOSTAPD 'essid' 'psk' 'mode' 'channel' 'address' 'netmask' 'gateway' 'first ip' 'last ip'
+  modHOSTAPD 'myPi' 'piCopilotAP' 'g' '11' '192.168.10.254' '255.255.255.0' '192.168.10.254' '192.168.10.2' '192.168.10.249'
+  ```
 
 ### Upgrading (Optional and known to break things - be curious || wait for a new release)
 * New image releases can be sporadic
