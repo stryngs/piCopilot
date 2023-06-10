@@ -1,0 +1,29 @@
+#!/usr/bin/python3
+
+from pymavlink import mavutil
+
+def iLoop(m):
+    """Loop the PWMs"""
+    while True:
+        vals = input('<rc> <pwm>')
+        try:
+            rc = int(vals.split(' ')[0])
+            pwm = int(vals.split(' ')[1])
+            m.set_servo(rc, pwm)
+            print(f'Sent {rc} @ {pwm}\n')
+        except Exception as E:
+            print(E)
+
+if __name__ == '__main__':
+    print('[!] Ensure you have mavproxy.py running as such in another SSH shell:')
+    print('[!] mavproxy.py --out 127.0.0.1:9898')
+    input('[*] Hit enter when mavproxy.py is running')
+
+    print('\n[~] Waiting on MAVLink')
+    m = mavutil.mavlink_connection(f'udpin:127.0.0.1:9898')
+    m.wait_heartbeat(blocking = True)
+    print('[~] MAVLink established')
+
+    print('[~] Expected format is: <rc val> <pwm val> --> 5 2000')
+    input('[*] Hit enter to loop RC commands')
+    iLoop(m)

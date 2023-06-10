@@ -1,5 +1,43 @@
 #!/usr/bin/env bash
 
+## mavproxy links
+sudo tee /etc/systemd/system/mavproxy.service >/dev/null << EOF
+[Unit]
+Description=mavproxy
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Restart=always
+RestartSec=3
+StartLimitInterval=0
+WorkingDirectory=/opt/piCopilot-unmanned/modules/telemetry
+ExecStart=/bin/bash /opt/piCopilot-unmanned/modules/telemetry/mproxy.wrapper
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target
+EOF
+systemctl daemon-reload
+systemctl disable mavproxy
+
+## Allow pi to modify via ssh command
+chown pi /etc/hostapd/hostapd.conf
+chmod 0664 /etc/hostapd/hostapd.conf
+chown pi /etc/wpa_supplicant/wpa_supplicant.conf
+chmod 0664 /etc/wpa_supplicant/wpa_supplicant.conf
+chown pi /etc/hostapd/hostapd.conf
+chmod 0664 /etc/hostapd/hostapd.conf
+chown pi /etc/dnsmasq.conf
+chmod 0664 /etc/dnsmasq.conf
+chown pi /etc/network/interfaces.d/wlan0
+chmod 0664 /etc/network/interfaces.d/wlan0
+chown pi /etc/network/interfaces.d/eth0
+chmod 0664 /etc/network/interfaces.d/eth0
+chown pi /usr/bin/copilotDhcp.sh
+chmod 0755 /usr/bin/copilotDhcp.sh
+
 ## Start supervisor daemon
 systemctl start supervisor
 systemctl enable supervisor

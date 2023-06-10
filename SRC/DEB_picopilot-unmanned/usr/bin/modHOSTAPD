@@ -1,0 +1,47 @@
+#!/bin/bash
+## essid, psk, mode, channel, address, netmask, gateway, first ip, last ip
+
+cat <<EOF > /etc/hostapd/hostapd.conf
+interface=wlan0
+driver=nl80211
+ssid=$1
+hw_mode=$3
+channel=$4
+wmm_enabled=0
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_passphrase=$2
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=CCMP
+rsn_pairwise=CCMP
+EOF
+
+cat <<EOF > /etc/network/interfaces.d/wlan0
+allow-hotplug wlan0
+iface wlan0 inet static
+    address $5
+    netmask $6
+    gateway $7
+    #wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+EOF
+
+cat <<EOF > /etc/network/interfaces.d/eth0
+allow-hotplug eth0
+iface eth0 inet static
+    address 192.168.144.254
+    netmask 255.255.255.0
+up route add -net 192.168.43.0/24 gw 192.168.144.11
+up route add -net 192.168.12.0/24 gw 192.168.144.11
+EOF
+
+cat <<EOF > /etc/dnsmasq.conf
+dhcp-range=$8,$9,$6,12h
+#dhcp-option=option:router,$7
+#dhcp-option=option:dns-server,$7
+dhcp-authoritative
+EOF
+
+## Override piCopilot
+echo "systemctl start dnsmasq" > /usr/bin/copilotDhcp.sh
