@@ -1,0 +1,2 @@
+packetEssentials>=1.8.8
+scapy>=2.4.5
