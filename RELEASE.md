@@ -1,6 +1,6 @@
 ## Image
-* https://configitnow.com/2020-08-20-raspios-buster-armhf_piCopilot_rc2.4_20230610.img.gz
-* https://configitnow.com/2020-08-20-raspios-buster-armhf_piCopilot_rc2.4_20230610.img.gz.sha512sum
+* https://configitnow.com/2020-08-20-raspios-buster-armhf_piCopilot_rc2.6_20230618.img.gz
+* https://configitnow.com/2020-08-20-raspios-buster-armhf_piCopilot_rc2.6_20230618.img.gz.sha512sum
 
 ## Username
 * pi

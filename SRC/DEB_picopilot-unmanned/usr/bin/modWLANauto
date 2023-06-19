@@ -1,0 +1,32 @@
+#!/bin/bash
+## essid, psk
+cat <<EOF > /etc/wpa_supplicant/wpa_supplicant.conf
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=US
+
+network={
+    ssid="$1"
+    psk="$2"
+    proto=RSN
+    key_mgmt=WPA-PSK
+    pairwise=CCMP
+    auth_alg=OPEN
+}
+EOF
+
+cat <<EOF > /etc/network/interfaces.d/wlan0
+auto wlan0
+allow-hotplug wlan0
+iface wlan0 inet dhcp
+    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+EOF
+
+cat <<EOF > /etc/network/interfaces.d/eth0
+allow-hotplug eth0
+iface eth0 inet static
+    address 192.168.144.254
+    netmask 255.255.255.0
+up route add -net 192.168.43.0/24 gw 192.168.144.11
+up route add -net 192.168.12.0/24 gw 192.168.144.11
+EOF
