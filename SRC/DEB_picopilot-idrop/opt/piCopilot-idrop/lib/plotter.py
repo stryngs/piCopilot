@@ -5,7 +5,6 @@ import pandas as pd
 import plotly.express as px
 import officeTasks as OT
 
-
 class Plotter(object):
     """All things sql export"""
 
@@ -22,6 +21,8 @@ class Plotter(object):
         iHtml = '<html>'
         with open('/opt/piCopilot-idrop/visuals/index.html', 'w') as oFile:
             for i in y:
+
+                ## Custom here
                 iHtml += '<a href="http://192.168.10.254:9090/{0}"</a>{0}</br>'.format(i)
             oFile.write(iHtml)
 

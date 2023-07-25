@@ -1,3 +1,4 @@
+import packetEssentials as PE
 from scapy.all import *
 
 class Main(object):
@@ -57,14 +58,13 @@ class Main(object):
         The overlap, while it works in RF, doesn't work on the NIC
         Some NICs see the overlap, but the headers still show the current chan
         """
-        fChannel = self.unity.control.curChan
-        fFreq = self.unity.control.curFreq
+        fFreq = packet[RadioTap].ChannelFrequency
+        fChannel = PE.chanFreq.freqDict.get(fFreq)
         fSig = packet[RadioTap].dBm_AntSignal
 
         ## Values for DB entry
         pType = self.unity.PE.conv.symString(packet[Dot11], 'type')
         subType = self.subParser(packet)
-
 
         ### Need to boolean this out cleaner
         fromDS = False

@@ -41,8 +41,12 @@ class Builder(object):
                     self.db.execute('DROP TABLE IF EXISTS main;')
                     self.db.execute('DROP TABLE IF EXISTS probes;')
                     self.db.execute('DROP TABLE IF EXISTS targets;')
-                    self.db.execute('DROP TABLE IF EXISTS timer;')
+                    self.db.execute('DROP TABLE IF EXISTS tpms;')
                     self.db.execute('DROP TABLE IF EXISTS uniques;')
+
+                    ## Custom here
+                    self.db.execute('DROP TABLE IF EXISTS timer;')
+
                     self.con.close()
                     print('Tables dropped\n  [+] Exiting\n')
                     sys.exit(0)

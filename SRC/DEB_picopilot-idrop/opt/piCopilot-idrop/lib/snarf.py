@@ -176,6 +176,8 @@ class Snarf(object):
                     self.unity.marker -= 1
 
                     return True
+
+        ## Custom here
         except:
             pass
 
