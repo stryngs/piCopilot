@@ -37,7 +37,10 @@ def crtlC(cap, unity):
     def tmp(signal, frame):
         print('\nTrying to stop gracefully')
         cap.con.close()
+
+        ## Custom here
         unity.conBeat.close()
+
         for i in psutil.process_iter():
             if 'kSnarf.py' in ' '.join(i.cmdline()):
                 i.kill()
@@ -62,9 +65,14 @@ def main(args):
     conf.nic = parser.get('prop', 'nic')
     conf.seenMax = int(parser.get('prop', 'seenMax'))
     conf.protocols = parser.get('prop', 'protocols')
-    conf.channels = parser.get('prop', 'channels')
     conf.hop = int(parser.get('prop', 'hop'))
     conf.mode = parser.get('prop', 'mode')
+
+    ## Channel hopping
+    try:
+        conf.channels = parser.get('prop', 'channels')
+    except:
+        conf.channels = None
 
     ## Usage scenarios
     if conf.mode != 'ids':

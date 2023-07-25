@@ -3,6 +3,7 @@
 import officeTasks as OT
 import psycopg2
 import time
+from configparser import ConfigParser
 from datetime import datetime, timedelta
 
 if __name__ == '__main__':
@@ -11,8 +12,17 @@ if __name__ == '__main__':
     tThen = tNow - timedelta(hours=72, minutes=0)
 
     ## SQL connect
+    class Foo(object):
+        pass
+    conf = Foo()
     print('Grabbing info')
-    cStr = "dbname='idrop' user='root' host='127.0.0.1' password='idrop'"
+    parser = ConfigParser()
+    parser.read('system.conf')
+    conf.user = parser.get('creds', 'dbUser')
+    conf.password = parser.get('creds', 'dbPass')
+    conf.host = parser.get('creds', 'dbHost')
+    conf.db = parser.get('creds', 'dbName')
+    cStr = f"dbname='{conf.db}' user='{conf.user}' host='{conf.host}' password='{conf.password}'"
     con = psycopg2.connect(cStr)
     con.autocommit = True
     db = con.cursor()
@@ -98,4 +108,4 @@ if __name__ == '__main__':
     # OT.gnr.sweep('tmp.csv')
 
     ### Next steps
-    ## Cycle this data into idrop
+    ### Cycle this data into idrop

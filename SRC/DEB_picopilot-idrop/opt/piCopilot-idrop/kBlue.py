@@ -282,7 +282,7 @@ class Blue(object):
     def pgsqlPrep(self):
         """ Connect and prep the pgsql db"""
         try:
-            cStr = "dbname='{0}' user='{1}' host='{2}' password='{3}'".format(self.conf.dbName, self.conf.dbUser, self.conf.dbHost, self.conf.dbPass)
+            cStr = f"dbname='{self.conf.dbName}' user='{self.conf.dbUser}' host='{self.conf.dbHost}' password='{self.conf.dbPass}'"
             con = psycopg2.connect(cStr)
             con.autocommit = True
             db = con.cursor()
@@ -299,12 +299,10 @@ class Blue(object):
                                                        noise INT);
                        """)
         except Exception as E:
-            print ("I am unable to connect to the database idrop")
+            print(f'I am unable to connect to the database {self.conf.dbName}')
             print(E)
             sys.exit(1)
-        dbName = 'idrop'
-
-        return (con, db, dbName)
+        return (con, db, self.conf.dbName)
 
 
     def main(self):
