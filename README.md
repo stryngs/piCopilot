@@ -67,12 +67,61 @@ Enhanced integration with data visualization tools like Grafana and plotly; bene
 
 4. Power back on and go
 
-## Why does most of the system run as root!?
-piCopilot expects a secured network.  It is not recommended to connect the pipeline network to any network where untrusted users are present or have the ability to manipulate or sniff traffic.
+## GPS integration
+piCopilot has the ability to notate GPS location.  Depending on the USB devices plugged into piCopilot you may need to tweak /etc/default/gpsd.  The GPS is enabled by way of opening a shell and then:
+```
+systemctl enable gpsd
+systemctl start gpsd
+```
 
-"Pick one thing and do it well".
+## Grafana visualizations
+Setup Grafana and visualize your findings
+```
+sudo -s
+# The password is ~~> notraspberry
+systemctl enable grafana-server
+systemctl start grafana-server
+```
+* Proceed to http://192.168.10.254:3000/login
+* Login with admin:admin
+* Change the default Grafana password if wanted
+* Connect grafana to the postgresql database
+  * Settings
+  * Data Sources
+  * Add Data Source
+    * PostgreSQL
+      * Host     --> localhost:5432
+      * Database --> idrop
+      * User     --> root
+      * Password --> idrop
+      * SSL Mode --> disable
+* A sample dashboard for idrop is waiting on you
 
-Support is available using the FOSS model if you need assistance with modifications on some of the lower level aspects of piCopilot usage.
+## Connecting piCopilot to the Internet
+* Give /etc/resolv.conf a nameserver
+* run modWLAN and then reboot
+```
+#modWLAN 'yourNetwork' 'yourPassword' 'Static IP for the Pi' 'netmask' 'gateway'
+modWLAN 'myHome' 'password' '192.168.73.202' '255.255.255.0' '192.168.73.1'
+```
+
+## Changing the self-hosted Access Point
+By default piCopilot runs on channel 11 using a 192.168.10.254.  If you have used modWLAN or want to simply change the AP settings run modHOSTAPD and then reboot.
+```
+#modHOSTAPD 'essid' 'psk' 'mode' 'channel' 'address' 'netmask' 'gateway' 'first ip' 'last ip'
+modHOSTAPD 'myPi' 'piCopilotAP' 'g' '11' '192.168.10.254' '255.255.255.0' '192.168.10.254' '192.168.10.2' '192.168.10.249'
+```
+
+## Tuning idrop
+To activate the k9 module notate out the MACs in question in the file /opt/piCopilot-idrop/targets.lst.  Each MAC is separated by a new line and an optional descriptor.  Upon running idrop will parse targets.lst and then update the targets table accordingly.  Each row within targets is constrained by by the mac and optional descriptor.  Thus, you may have the MAC of aa:bb:cc:dd:ee:ff multiple times, but only if the optional descriptor is different.
+
+In the current version only notations in targets.lst will be notated.  Future planning will allow the user to optionally include all MACs listed in the targets table.
+
+targets.lst is case-insensitive for the MAC.  An example targets.lst is as follows:
+```
+aa:bb:cc:dd:ee:ff My lost cell phone
+11:22:AA:Bb:CD:ef That laptop I lost in the woods
+```
 
 ## Performance boosts (Recommended - Required for kBlue)
 For SD card preservation, dphys-swapfile is disabled.  It is preferable to offload any swapping to a USB:
@@ -105,62 +154,6 @@ mount /dev/sda2
 ```
 
 5. You may now plug in an Ubertooth
-
-## GPS integration
-piCopilot has the ability to notate GPS location.  Depending on the USB devices plugged into piCopilot you may need to tweak /etc/default/gpsd.  The GPS is enabled by way of opening a shell and then:
-```
-systemctl enable gpsd
-systemctl start gpsd
-```
-
-## Grafana visualizations
-Setup Grafana and visualize your findings
-```
-sudo -s
-# The password is ~~> notraspberry
-systemctl enable grafana-server
-systemctl start grafana-server
-```
-* Proceed to http://192.168.10.254:3000/login
-* Login with admin:admin
-* Change the default Grafana password if wanted
-* Connect grafana to the postgresql database
-  * Settings
-  * Data Sources
-  * Add Data Source
-    * PostgreSQL
-      * Host     --> localhost:5432
-      * Database --> idrop
-      * User     --> root
-      * Password --> idrop
-      * SSL Mode --> disable
-* A sample dashboard for idrop is waiting on you
-
-## Tuning idrop
-To activate the k9 module notate out the MACs in question in the file /opt/piCopilot-idrop/targets.lst.  Each MAC is separated by a new line and an optional descriptor.  Upon running idrop will parse targets.lst and then update the targets table accordingly.  Each row within targets is constrained by by the mac and optional descriptor.  Thus, you may have the MAC of aa:bb:cc:dd:ee:ff multiple times, but only if the optional descriptor is different.
-
-In the current version only notations in targets.lst will be notated.  Future planning will allow the user to optionally include all MACs listed in the targets table.
-
-targets.lst is case-insensitive for the MAC.  An example targets.lst is as follows:
-```
-aa:bb:cc:dd:ee:ff My lost cell phone
-11:22:AA:Bb:CD:ef That laptop I lost in the woods
-```
-
-## Connecting piCopilot to the Internet
-* Give /etc/resolv.conf a nameserver
-* run modWLAN and then reboot
-```
-#modWLAN 'yourNetwork' 'yourPassword' 'Static IP for the Pi' 'netmask' 'gateway'
-modWLAN 'myHome' 'password' '192.168.73.202' '255.255.255.0' '192.168.73.1'
-```
-
-## Changing the self-hosted Access Point
-By default piCopilot runs on channel 11 using a 192.168.10.254.  If you have used modWLAN or want to simply change the AP settings run modHOSTAPD and then reboot.
-```
-#modHOSTAPD 'essid' 'psk' 'mode' 'channel' 'address' 'netmask' 'gateway' 'first ip' 'last ip'
-modHOSTAPD 'myPi' 'piCopilotAP' 'g' '11' '192.168.10.254' '255.255.255.0' '192.168.10.254' '192.168.10.2' '192.168.10.249'
-```
 
 ## Upgrading (Known to break things)
 * New image releases can be sporadic
@@ -205,6 +198,13 @@ DROP TABLE IF EXISTS uniques;
     * Clear the cache in history as a workaround.
 * kBlue can cause ubertooth hangs with multiple on/off calls.
     * Reboot is easiest, but "killall -9 ubertooth-btle" works for the ssh
+
+## Why does most of the system run as root!?
+piCopilot expects a secured network.  It is not recommended to connect the pipeline network to any network where untrusted users are present or have the ability to manipulate or sniff traffic.
+
+"Pick one thing and do it well".
+
+Support is available using the FOSS model if you need assistance with modifications on some of the lower level aspects of piCopilot usage.
 
 ## Lessons learned from tools like piCopilot
 1.Keep Wireless and Bluetooth off when not in use, seriously.  Yes, really.
