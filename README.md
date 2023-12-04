@@ -186,20 +186,17 @@ cd piCopilot/DEBs
 dpkg -i *.deb
 ```
 * Prep the database
-    - Database schema changes may occur during upgrades and without warning
-    - Backup the data if it matters
-    - DROP tables is our friend:
- ```
- psql idrop
- DROP TABLE IF EXISTS blue;
- DROP TABLE IF EXISTS k9;
- DROP TABLE IF EXISTS main;
- DROP TABLE IF EXISTS probes;
- DROP TABLE IF EXISTS targets;
- DROP TABLE IF EXISTS timer;
- DROP TABLE IF EXISTS uniques;
- \q
- ```
+```
+psql idrop
+DROP TABLE IF EXISTS blue;
+DROP TABLE IF EXISTS k9;
+DROP TABLE IF EXISTS main;
+DROP TABLE IF EXISTS probes;
+DROP TABLE IF EXISTS targets;
+DROP TABLE IF EXISTS timer;
+DROP TABLE IF EXISTS uniques;
+\q
+```
 
 ## Known bug(s)
 * For the page on /, the idrop Service gets confused by the presence of kBlue and how sh.sysMode is used.  When enabling kBlue and returning to the main menu, the idrop Service will now read as kBlue.  This will be worked out in later releases.
