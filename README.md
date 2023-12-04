@@ -21,6 +21,7 @@ grep -RHn -e '192.168.10.10' -e '192.168.10.254'
 ```
 
 **Benefits of integrating with piCopilot**
+
 *Swarm/Battalion Formation Management*
 Useful in a multitude of operations to include large-scale agricultural monitoring, or environmental surveys where handling large groups of unmanned vehicles in synchronized formations is a must.
 
