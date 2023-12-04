@@ -190,6 +190,7 @@ DROP TABLE IF EXISTS timer;
 DROP TABLE IF EXISTS uniques;
 \q
 ```
+* Reboot
 
 ## Known bug(s)
 * For the page on /, the idrop Service gets confused by the presence of kBlue and how sh.sysMode is used.  When enabling kBlue and returning to the main menu, the idrop Service will now read as kBlue.  This will be worked out in later releases.
