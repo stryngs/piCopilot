@@ -150,17 +150,17 @@ aa:bb:cc:dd:ee:ff My lost cell phone
 ## Connecting piCopilot to the Internet
 * Give /etc/resolv.conf a nameserver
 * run modWLAN and then reboot
-  ```
-  #modWLAN 'yourNetwork' 'yourPassword' 'Static IP for the Pi' 'netmask' 'gateway'
-  modWLAN 'myHome' 'password' '192.168.73.202' '255.255.255.0' '192.168.73.1'
-  ```
+```
+#modWLAN 'yourNetwork' 'yourPassword' 'Static IP for the Pi' 'netmask' 'gateway'
+modWLAN 'myHome' 'password' '192.168.73.202' '255.255.255.0' '192.168.73.1'
+```
 
 ## Changing the self-hosted Access Point
 By default piCopilot runs on channel 11 using a 192.168.10.254.  If you have used modWLAN or want to simply change the AP settings run modHOSTAPD and then reboot.
-  ```
-  #modHOSTAPD 'essid' 'psk' 'mode' 'channel' 'address' 'netmask' 'gateway' 'first ip' 'last ip'
-  modHOSTAPD 'myPi' 'piCopilotAP' 'g' '11' '192.168.10.254' '255.255.255.0' '192.168.10.254' '192.168.10.2' '192.168.10.249'
-  ```
+```
+#modHOSTAPD 'essid' 'psk' 'mode' 'channel' 'address' 'netmask' 'gateway' 'first ip' 'last ip'
+modHOSTAPD 'myPi' 'piCopilotAP' 'g' '11' '192.168.10.254' '255.255.255.0' '192.168.10.254' '192.168.10.2' '192.168.10.249'
+```
 
 ## Upgrading (Known to break things)
 * New image releases can be sporadic
