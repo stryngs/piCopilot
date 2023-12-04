@@ -41,16 +41,16 @@ Supports a wide range of hardware and various PC configurations allowing for dep
 Enhanced integration with data visualization tools like Grafana and plotly; beneficial for command and control centers needing to make quick and informed decisions.
 
 ## Core packages
-* piCopilot
-  * The ecosystem
-* piCopilot-idrop
-  * Intrusion Detection Reaction Observation Platform
-* piCopilot-scripts
-  * Useful scripts for piCopilot usage across the ecosystem
-* piCopilot-unmanned
-  * Pi powered Copilot for Unmanned Systems
-* piCopilot-wifi
-  * WiFi meta-package for piCopilot
+* *piCopilot*
+The ecosystem
+* *piCopilot-idrop*
+Intrusion Detection Reaction Observation Platform
+* *piCopilot-scripts*
+Useful scripts for piCopilot usage across the ecosystem
+* *piCopilot-unmanned*
+Pi powered Copilot for Unmanned Systems
+* *piCopilot-wifi*
+WiFi meta-package for piCopilot
 
 ## Getting started
 1. Create the piCopilot image for the Raspberry Pi
