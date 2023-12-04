@@ -1,4 +1,5 @@
-# piCopilotpiCopilot is an ecosystem for autonomous workflows.  It has been tailored for the world of unmanned Intelligence, Surveillance and Reconnaissance.  Whether acting as an assistant during air, land or sea missions, tracking Wi-Fi and Bluetooth signals, optical monitoring, or some other interesting integration; piCopilot stands ready to assist the operator with whatever may come.
+# piCopilot
+piCopilot is an ecosystem for autonomous workflows.  It has been tailored for the world of unmanned Intelligence, Surveillance and Reconnaissance.  Whether acting as an assistant during air, land or sea missions, tracking Wi-Fi and Bluetooth signals, optical monitoring, or some other interesting integration; piCopilot stands ready to assist the operator with whatever may come.
 
 The Wi-Fi and Bluetooth monitoring capabilities of piCopilot may not be legal for use in every Country or locality.  Ensure that you check the rules and regulations for where you will be operating prior to use.  The operator is responsible for any legal and/or civil issues that may arise from their usage of piCopilot.
 
