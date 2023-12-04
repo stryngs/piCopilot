@@ -21,22 +21,22 @@ grep -RHn -e '192.168.10.10' -e '192.168.10.254'
 ```
 
 **Benefits of integrating with piCopilot**
-- *Swarm/Battalion Formation Management*
+*Swarm/Battalion Formation Management*
 Useful in a multitude of operations to include large-scale agricultural monitoring, or environmental surveys where handling large groups of unmanned vehicles in synchronized formations is a must.
 
-- *Cross-Platform*
+*Cross-Platform*
 Operating system agnostic and provides broad applicability across different hardware platforms.
 
-- *GPS-Denied Operation Solutions*
+*GPS-Denied Operation Solutions*
 Provides solutions for operations in places where denial or spoofing is likely, ensuring uninterrupted missions in challenging terrains or adversarial conditions.
 
-- *Enhanced SIGINT Capabilities*
+*Enhanced SIGINT Capabilities*
 Advanced Signals Intelligence capabilities for effective surveillance and reconnaissance across the RF spectrum.
 
-- *Flexible Hardware Compatibility*
+*Flexible Hardware Compatibility*
 Supports a wide range of hardware and various PC configurations allowing for deployment on existing infrastructure, reducing the need for specialized equipment.
 
-- *Improved Data Visualization and Analysis*
+*Improved Data Visualization and Analysis*
 Enhanced integration with data visualization tools like Grafana and plotly; beneficial for command and control centers needing to make quick and informed decisions.
 
 ## Core packages
