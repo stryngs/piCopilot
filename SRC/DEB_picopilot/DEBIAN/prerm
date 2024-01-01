@@ -2,6 +2,3 @@
 
 ## Deal with supervisor
 systemctl stop supervisor
-
-## GPS
-pip3 uninstall gpsd-py3 -y
