@@ -3,12 +3,10 @@ foxHunter tracks a given MAC Address based on the Source Address as prescribed b
 
 ## Setup
 ```
-git clone https://github.com/stryngs/packetEssentials
-python3 -m pip install packetEssentials/RESOURCEs/packetEssentials*
 python3 -m pip install scapy
 ```
 
 ## Usage
 ```
-./foxHunter.py -t aa:bb:cc:dd:ee:ff -i wlan0mon
+./foxHunter.py -i wlan0mon -t aa:bb:cc:dd:ee:ff
 ```

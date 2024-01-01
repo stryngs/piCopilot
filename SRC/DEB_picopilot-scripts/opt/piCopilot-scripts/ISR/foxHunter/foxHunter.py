@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 import argparse
-import packetEssentials as PE
 import sys
 from scapy.all import *
 
@@ -10,7 +9,7 @@ class Fox(object):
     IEEE in reference to ADDRs 1-4 for the source of a given frame that has been
     transmitted.
     """
-    __slots__ = ['i', 't', 'spC', 'spA']
+    __slots__ = ['i', 't', 'spC', 'spA', 'freqDict']
     def __init__(self, i, t):
         self.i = i
         self.t = t
@@ -20,6 +19,37 @@ class Fox(object):
                     '~',
                     '\\',
                     '*']
+        self.freqDict = {2412: 1,
+                         2417: 2,
+                         2422: 3,
+                         2427: 4,
+                         2432: 5,
+                         2437: 6,
+                         2442: 7,
+                         2447: 8,
+                         2452: 9,
+                         2457: 10,
+                         2462: 11,
+                         2467: 12,
+                         2472: 13,
+                         2484: 14,
+                         5180: 36,
+                         5200: 40,
+                         5210: 42,
+                         5220: 44,
+                         5240: 48,
+                         5250: 50,
+                         5260: 52,
+                         5290: 58,
+                         5300: 60,
+                         5320: 64,
+                         5745: 149,
+                         5760: 152,
+                         5765: 153,
+                         5785: 157,
+                         5800: 160,
+                         5805: 161,
+                         5825: 165}
 
 
     def lFilter(self, tgtMac):
@@ -33,9 +63,9 @@ class Fox(object):
             ## With FCS
             if packet.haslayer(Dot11FCS):
                 ## Notate bits
-                if PE.pt.nthBitSet(packet[Dot11FCS].FCfield, 0) is True:
+                if self.nthBitSet(packet[Dot11FCS].FCfield, 0) is True:
                     toDS = True
-                if PE.pt.nthBitSet(packet[Dot11FCS].FCfield, 1) is True:
+                if self.nthBitSet(packet[Dot11FCS].FCfield, 1) is True:
                     fromDS = True
 
                 ## Who sent it
@@ -55,9 +85,10 @@ class Fox(object):
             elif packet.haslayer(Dot11):
 
                 ## Notate bits
-                if PE.pt.nthBitSet(packet[Dot11].FCfield, 0) is True:
+
+                if self.nthBitSet(packet[Dot11].FCfield, 0) is True:
                     toDS = True
-                if PE.pt.nthBitSet(packet[Dot11].FCfield, 1) is True:
+                if self.nthBitSet(packet[Dot11].FCfield, 1) is True:
                     fromDS = True
 
                 ## Who sent it
@@ -74,21 +105,36 @@ class Fox(object):
                         theMac = packet[Dot11].addr2
 
             ## Was it ours
-            if theMac == tgtMac.lower():
-                return True
+            try:
+                if theMac == tgtMac.lower():
+                    return True
+            except Exception as E:
+                pass
+                # print(E)
+                # wrpcap('debug.pcap', packet)
+                # sys.exit()
+
         return tailChaser
+
+
+    def nthBitSet(self, integer, bit):
+        """Determine if the nth bit is set on a given integer.
+        The first bit is considered the zeroth bit.  stdout is the decimal value
+        of the bit you turn on with this method, it also returns a True.
+        Using the Python bitwise operator for AND, &.
+
+        Give it a number, it will let you know if the binary on the specified
+        bit from right to left is a 1 (True) or a 0 (False).
+        """
+        if integer & (1 << bit):
+            return True
+        return False
 
 
     def pHandler(self, tgtMac):
         """ prn """
         def snarf(packet):
-
-            ## Find the channel in decimal
-            spitball = PE.chanFreq.twoFour(packet[RadioTap].ChannelFrequency)
-            if spitball is not None:
-                print(self.spinner() + ' ' + str(tgtMac.lower()) + ' --> ' + str(PE.chanFreq.twoFour(packet[RadioTap].ChannelFrequency)) + ' @ ' + str(packet[RadioTap].dBm_AntSignal))
-            else:
-                print(self.spinner() + ' ' + str(tgtMac.lower()) + ' --> ' + str(PE.chanFreq.fiveEight(packet[RadioTap].ChannelFrequency)) + ' @ ' + str(packet[RadioTap].dBm_AntSignal))
+            print(f'{self.spinner()} {tgtMac.lower()} --> {self.freqDict.get(packet[RadioTap].ChannelFrequency)} @ {packet[RadioTap].dBm_AntSignal}' )
         return snarf
 
 

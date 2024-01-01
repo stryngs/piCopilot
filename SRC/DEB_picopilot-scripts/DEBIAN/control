@@ -1,5 +1,5 @@
 Package: picopilot-scripts
-Version: 0.1.4
+Version: 0.1.6
 Architecture: all
 Section: net
 Priority: optional
