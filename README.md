@@ -83,18 +83,20 @@ systemctl enable grafana-server
 systemctl start grafana-server
 ```
 * Proceed to http://192.168.10.254:3000/login
-* Login with admin:admin
-* Change the default Grafana password if wanted
-* Connect grafana to the postgresql database
-  * Settings
-  * Data Sources
-  * Add Data Source
-    * PostgreSQL
-      * Host     --> localhost:5432
-      * Database --> idrop
-      * User     --> root
-      * Password --> idrop
-      * SSL Mode --> disable
+  * Login with admin:admin
+  * Change the default Grafana password if wanted
+* Select Configuration | Data Sources | Add data source | Select PostgreSQL
+
+|Setting|Entry|
+|-------|-----|
+|Host|localhost:5432|
+|Database|idrop|
+|User|root|
+|Password|idrop|
+|SSL Mode|disable|
+
+Click **Save & Test**.  You should see **Database Connection OK**.
+* Select Dashboards | Manage
 * A sample dashboard for idrop is waiting on you
 
 ## Connecting piCopilot to the Internet
