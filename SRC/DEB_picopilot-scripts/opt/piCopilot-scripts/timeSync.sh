@@ -17,13 +17,13 @@ systemctl stop gpsd.socket
 ## Start the NTP
 ntpLoad--()
 {
-systemctl start ntp
+systemctl start ntpsec
 }
 
 ## Stop the NTP
 ntpUnload--()
 {
-systemctl stop ntp
+systemctl stop ntpsec
 }
 
 ## Sync time to GPS
@@ -51,7 +51,7 @@ fi
 }
 
 ### main
-date -s "Sat, 1 Oct 2022 00:00:00 -0000" ## Hardcoded as a workaround to the gpsd problem where the time is incorrect
+date -s "Wed, 1 Oct 2025 00:00:00 -0000" ## Hardcoded as a workaround to the gpsd problem where the time is incorrect
 gpsUnload--
 gpsLoad--
 timeSync--

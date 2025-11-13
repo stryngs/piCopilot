@@ -3,7 +3,7 @@
 ## Disable GPS and NTP
 systemctl disable gpsd
 systemctl disable gpsd.socket
-systemctl disable ntp
+systemctl disable ntpsec
 
 ## Stop Supervisor daemon
 systemctl stop supervisor
@@ -39,7 +39,7 @@ EOF
 cat <<EOF > /etc/hostapd/hostapd.conf
 interface=wlan0
 driver=nl80211
-ssid=myPi
+ssid=piCopilot
 hw_mode=g
 channel=11
 wmm_enabled=0
