@@ -1,0 +1,4 @@
+#!/bin/bash
+
+## Obtains the current time, useful when being impatient
+sudo ntpd -gq
