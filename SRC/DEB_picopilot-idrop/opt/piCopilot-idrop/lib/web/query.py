@@ -43,8 +43,8 @@ class QUERY(object):
                 usbHDD = None
             return render_template('query/index.html',
                                    _kSnarf = self.sh.rlCheck('kSnarfPsql'),
-                                   logSize = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
-                                   hddAvail = self.sh.bashReturn("df -h | grep '/dev/root'"),
+                                   logSize = sh.bashReturn("du -h /var/lib/postgresql/16/main | tail -n 1 | awk '{print $1}'"),
+                                   system_hddAvail = sh.bashReturn("df -h | grep '/$'"),
                                    usb_hddAvail = usbHDD)
 ###############################################################################
 
@@ -68,7 +68,7 @@ class QUERY(object):
                 usbHDD = None
             return render_template('query/index.html',
                                    _kSnarf = self.sh.rlCheck('kSnarfPsql'),
-                                   logSize = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
+                                   logSize = sh.bashReturn("du -h /var/lib/postgresql/16/main | tail -n 1 | awk '{print $1}'"),
                                    hddAvail = sh.bashReturn("df -h | grep '/dev/root'"),
                                    usb_hddAvail = usbHDD)
 ###############################################################################
@@ -107,6 +107,6 @@ class QUERY(object):
                 usbHDD = None
             return render_template('query/index.html',
                                    _kSnarf = self.sh.rlCheck('kSnarfPsql'),
-                                   logSize = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
+                                   logSize = sh.bashReturn("du -h /var/lib/postgresql/16/main | tail -n 1 | awk '{print $1}'"),
                                    hddAvail = self.sh.bashReturn("df -h | grep '/dev/root'"),
                                    usb_hddAvail = usbHDD)

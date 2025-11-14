@@ -32,8 +32,8 @@ def index():
                                system_Service = sh.sysMode,
                                system_Mode = 'None',
                                system_Channel = sh.bashReturn(iStr),
-                               query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
-                               system_hddAvail = sh.bashReturn("df -h | grep '/dev/root'"),
+                               query_Exports = sh.bashReturn("du -h /var/lib/postgresql/16/main | tail -n 1 | awk '{print $1}'"),
+                               system_hddAvail = sh.bashReturn("df -h | grep '/$'"),
                                usb_hddAvail = usbHDD,
                                system_Time = sh.bashReturn("date"))
     if sh.sysMode == 'kSnarfPsql':
@@ -42,8 +42,8 @@ def index():
                                system_Service = sh.sysMode,
                                system_Mode = sh.rlCheck('kSnarfPsql'),
                                system_Channel = sh.bashReturn(iStr),
-                               query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
-                               system_hddAvail = sh.bashReturn("df -h | grep '/dev/root'"),
+                               query_Exports = sh.bashReturn("du -h /var/lib/postgresql/16/main | tail -n 1 | awk '{print $1}'"),
+                               system_hddAvail = sh.bashReturn("df -h | grep '/$'"),
                                usb_hddAvail = usbHDD,
                                system_Time = sh.bashReturn("date"))
     if sh.sysMode == 'Off':
@@ -52,8 +52,8 @@ def index():
                                system_Service = sh.sysMode,
                                system_Mode = 'Off',
                                system_Channel = sh.bashReturn(iStr),
-                               query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
-                               system_hddAvail = sh.bashReturn("df -h | grep '/dev/root'"),
+                               query_Exports = sh.bashReturn("du -h /var/lib/postgresql/16/main | tail -n 1 | awk '{print $1}'"),
+                               system_hddAvail = sh.bashReturn("df -h | grep '/$'"),
                                usb_hddAvail = usbHDD,
                                system_Time = sh.bashReturn("date"))
 
@@ -63,8 +63,8 @@ def index():
                                system_Service = sh.sysMode,
                                system_Mode = sh.sysMode,
                                system_Channel = sh.bashReturn(iStr),
-                               query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
-                               system_hddAvail = sh.bashReturn("df -h | grep '/dev/root'"),
+                               query_Exports = sh.bashReturn("du -h /var/lib/postgresql/16/main | tail -n 1 | awk '{print $1}'"),
+                               system_hddAvail = sh.bashReturn("df -h | grep '/$'"),
                                usb_hddAvail = usbHDD,
                                system_Time = sh.bashReturn("date"))
 
@@ -74,8 +74,8 @@ def index():
                            system_Service = sh.sysMode,
                            system_Mode = sh.sysMode,
                            system_Channel = sh.bashReturn(iStr),
-                           query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
-                           system_hddAvail = sh.bashReturn("df -h | grep '/dev/root'"),
+                           query_Exports = sh.bashReturn("du -h /var/lib/postgresql/16/main | tail -n 1 | awk '{print $1}'"),
+                           system_hddAvail = sh.bashReturn("df -h | grep '/$'"),
                            usb_hddAvail = usbHDD,
                            system_Time = sh.bashReturn("date"))
 ###############################################################################
@@ -104,8 +104,8 @@ def timeClick():
                            system_Service = sh.sysMode,
                            system_Mode = 'None',
                            system_Channel = sh.bashReturn(iStr),
-                           query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
-                           system_hddAvail = sh.bashReturn("df -h | grep '/dev/root'"),
+                           query_Exports = sh.bashReturn("du -h /var/lib/postgresql/16/main | tail -n 1 | awk '{print $1}'"),
+                           system_hddAvail = sh.bashReturn("df -h | grep '/$'"),
                            usb_hddAvail = usbHDD,
                            system_Time = sh.bashReturn("date"))
 
@@ -126,14 +126,13 @@ def timeSync():
     ### DEBUG
     ## Modify as needed if not running in a conventional setup
     os.system('/bin/bash /opt/piCopilot-scripts/timeSync.sh')
-
     return render_template('index.html',
                            kBlue_Service = sh.rlCheck('kBlue'),
                            system_Service = sh.sysMode,
                            system_Mode = 'None',
                            system_Channel = sh.bashReturn(iStr),
-                           query_Exports = sh.bashReturn("du -h /var/lib/postgresql/11/main | tail -n 1 | awk '{print $1}'"),
-                           system_hddAvail = sh.bashReturn("df -h | grep '/dev/root'"),
+                           query_Exports = sh.bashReturn("du -h /var/lib/postgresql/16/main | tail -n 1 | awk '{print $1}'"),
+                           system_hddAvail = sh.bashReturn("df -h | grep '/$'"),
                            usb_hddAvail = usbHDD,
                            system_Time = sh.bashReturn("date"))
 

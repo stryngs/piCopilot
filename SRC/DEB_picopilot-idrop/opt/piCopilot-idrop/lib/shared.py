@@ -1,4 +1,5 @@
 import subprocess
+import os
 from configparser import ConfigParser
 
 class Shared(object):
@@ -17,18 +18,16 @@ class Shared(object):
 
     def rlCheck(self, relay):
         """Check the status of the relay"""
-        return subprocess.check_output('supervisorctl status {0}'.format(relay),
-                                       shell = True).decode().split()[1]
+        return os.popen(f'supervisorctl status {relay}').read().split()[1]
 
 
     def rlControl(self, button, relay):
         """Control the relay"""
         self.sysMode = relay
-        subprocess.check_output('supervisorctl {0} {1}'.format(button, relay),
-                                shell = True)
+        os.psopen(f'supervisorctl {button} {relay}')
 
 
     def bashReturn(self, cmd):
         """Cheap bash return"""
-        return subprocess.check_output(cmd,
-                                       shell = True).decode().strip()
+        return os.popen(f'{cmd}').read().strip()
+
