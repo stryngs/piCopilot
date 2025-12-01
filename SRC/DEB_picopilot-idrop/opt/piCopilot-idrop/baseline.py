@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import argparse
 import officeTasks as OT
 import psycopg2
 import time
@@ -7,9 +8,17 @@ from configparser import ConfigParser
 from datetime import datetime, timedelta
 
 if __name__ == '__main__':
-    ## Grab current time based off the last hour
+    parser = argparse.ArgumentParser(description = 'baseline the idrop observations')
+    parser.add_argument('--hours', help = 'How many hours to look back for baselining [Default is 72]')
+    args = parser.parse_args()
+
+    if args.hours is None:
+        lookBack = 72
+    else:
+        lookBack = int(args.hours)
+
     tNow = datetime.today()
-    tThen = tNow - timedelta(hours=72, minutes=0)
+    tThen = tNow - timedelta(hours = lookBack, minutes = 0)
 
     ## SQL connect
     class Foo(object):
@@ -95,17 +104,16 @@ if __name__ == '__main__':
     vList = []
     tRange = tThen.strftime('%Y-%m-%d %H:%M:%S') + ' ' + tNow.strftime('%Y-%m-%d %H:%M:%S')
     tStore = tRange.replace(' ', '').replace(':', '_').replace('-', '_')
-    print(tRange)
     hdrs = ['tRange', 'mac', 'close', 'far', 'avg', 'skew', 'count']
     for k, v in vDict.items():
         # print(k, v)
         vList.append(((tRange, k) + tuple([i for i in v])))
     OT.csv.csvGen('tmp.csv', hdrs, vList)
-    con = OT.csv.csv2sql('tmp.csv', tStore, 'baseline.sqlite3')
+    con = OT.csv.csv2sql('tmp.csv', tStore, 'theBaseline.sqlite3')
     con.close()
 
-    print('./baseline.sqlite3 created!')
-    # OT.gnr.sweep('tmp.csv')
+    print('./theBaseline.sqlite3 created!')
+    OT.gnr.sweep('tmp.csv')
 
     ### Next steps
     ### Cycle this data into idrop
