@@ -24,7 +24,7 @@ class Shared(object):
     def rlControl(self, button, relay):
         """Control the relay"""
         self.sysMode = relay
-        os.psopen(f'supervisorctl {button} {relay}')
+        os.popen(f'supervisorctl {button} {relay}')
 
 
     def bashReturn(self, cmd):
