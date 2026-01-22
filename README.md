@@ -50,22 +50,21 @@ Enhanced integration with data visualization tools like Grafana and plotly; bene
 ## Getting started
 1. Create the piCopilot image for the Raspberry Pi
 * Refer to notes in RELEASE
-* Minimum 8GB SD card required
+* Minimum 16GB SD card required
 * Burn the image
 * Boot the Raspberry Pi
 
 2. When piCopilot first boots it will be running in hostapd mode.
-* Connect to the wifi ESSID called myPi
+* Connect to the wifi ESSID called piCopilot
 * The password is piCopilotAP
 
 3. Verify piCopilot-idrop is running and setup external USB NIC for 802.11
-* Ports 8001 and 9001 should now be in use
 * Plug in USB NIC
 * Open a browser and proceed to http://192.168.10.254:8001/
 * Select NIC prep
 * The system will shutdown
 
-4. Power back on and go
+4. Power back on and go.
 
 ## GPS integration
 piCopilot has the ability to notate GPS location.  Depending on the USB devices plugged into piCopilot you may need to tweak /etc/default/gpsd.  The GPS is enabled by way of opening a shell and then:
