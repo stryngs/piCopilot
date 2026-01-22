@@ -1,9 +1,9 @@
 ## Image
-* https://configitnow.com/2020-08-20-raspios-buster-armhf_piCopilot_rc2.8_20250625.img.gz
-* https://configitnow.com/2020-08-20-raspios-buster-armhf_piCopilot_rc2.8_20250625.img.gz.sha512sum
+* https://configitnow.com/ubuntu-24.04.3-preinstalled-server-arm64-raspi_piCopilot-20260122.img.gz
+* https://configitnow.com/ubuntu-24.04.3-preinstalled-server-arm64-raspi_piCopilot-20260122.img.gz.sha256sum
 
 ## Username
-* pi
+* ubuntu
 
 ## Password
 * notraspberry
