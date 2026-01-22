@@ -18,7 +18,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
 
-    i1 = "iwlist {0} channel | grep Current | ".format(sh.conf.nic)
+    i1 = f"iwlist {sh.conf.nic} channel | grep Current | "
     i2 = "awk '{print $5}' | cut -d\) -f1| tail -n 1"
     iStr = i1 + i2
     try:
@@ -92,7 +92,7 @@ def jquery():
 @app.route('/timer')
 def timeClick():
     sh.tmr.tMark()
-    i1 = "iwlist {0} channel | grep Current | ".format(sh.conf.nic)
+    i1 = f"iwlist {sh.conf.nic} channel | grep Current | "
     i2 = "awk '{print $5}' | cut -d\) -f1| tail -n 1"
     iStr = i1 + i2
     try:
@@ -115,7 +115,7 @@ def nicPrep():
 
 @app.route('/TIMEsync')
 def timeSync():
-    i1 = "iwlist {0} channel | grep Current | ".format(sh.conf.nic)
+    i1 = f"iwlist {sh.conf.nic} channel | grep Current | "
     i2 = "awk '{print $5}' | cut -d\) -f1| tail -n 1"
     iStr = i1 + i2
     try:

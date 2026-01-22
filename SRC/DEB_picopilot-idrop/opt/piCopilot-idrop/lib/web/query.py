@@ -57,7 +57,10 @@ class QUERY(object):
                 os.remove('/opt/piCopilot-idrop/downloads/logs.zip')
             except:
                 pass
-            shutil.rmtree('/opt/piCopilot-idrop/logs')
+            try:
+                shutil.rmtree('/opt/piCopilot-idrop/logs')
+            except:
+                pass
             os.mkdir('/opt/piCopilot-idrop/logs')
             os.system('chown -R postgres /opt/piCopilot-idrop/logs')
             os.system('chown -R postgres /opt/piCopilot-idrop/downloads')
@@ -82,14 +85,18 @@ class QUERY(object):
                 os.remove('/opt/piCopilot-idrop/downloads/logs.zip')
             except Exception as E:
                 print(E)
+            try:
+                os.mkdir('/opt/piCopilot-idrop/downloads')
+            except:
+                pass
             self.exporter.pgsqlConnect()
             self.exporter.pgsqlExporter()
             self.exporter.con.close()
-            shutil.make_archive('/opt/piCopilot-idrop/downloads/logs/', 'zip', root_dir='/opt/piCopilot-idrop/logs')
+            shutil.make_archive('/opt/piCopilot-idrop/downloads/logs', 'zip', root_dir = '/opt/piCopilot-idrop/logs')
 
             ## fsprep
             #os.system('rm -f /opt/piCopilot-idrop/logs/pipes.csv')
-            return send_file('/opt/piCopilot-idrop/downloads/logs.zip', as_attachment=True)
+            return send_file('/opt/piCopilot-idrop/downloads/logs.zip', as_attachment = True)
 ###############################################################################
 
 

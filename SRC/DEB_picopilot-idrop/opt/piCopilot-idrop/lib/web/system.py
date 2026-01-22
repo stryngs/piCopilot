@@ -56,14 +56,14 @@ class SYSTEM(object):
 
                     ## Cheap way to snipe kSnarf as it is hanging
                     kPID = str(self.sh.bashReturn("ps aux | grep kSnar[f] | awk '{print $2}'"))
-                    print ('OUR kSnarf PID IS {0}'.format(str(kPID)))
-                    print ('OUR kSnarf PID IS TYPE {0}'.format(str(type(kPID))))
+                    print (f'OUR kSnarf PID IS {kPID}')
+                    print (f'OUR kSnarf PID IS TYPE {kPID}')
                     try:
-                        self.sh.bashReturn("kill -9 %s" % kPID)
+                        self.sh.bashReturn(f"kill -9 {kPID}")
                     except:
                         time.sleep(2)
                         try:
-                            self.sh.bashReturn("kill -9 %s" % kPID)
+                            self.sh.bashReturn(f"kill -9 {kPID}")
                         except:
                             pass
                         pass

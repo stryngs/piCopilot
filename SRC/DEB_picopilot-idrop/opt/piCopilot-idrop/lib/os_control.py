@@ -50,7 +50,7 @@ class Control(object):
     def iwSet(self, channel):
         """Set the wifi channel"""
         try:
-            os.system('iwconfig {0} channel {1}'.format(self.nic, channel))
+            os.system(f'iwconfig {self.nic} channel {channel}')
 
         ## Custom here
         except:

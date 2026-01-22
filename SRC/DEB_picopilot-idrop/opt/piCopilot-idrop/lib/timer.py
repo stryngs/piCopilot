@@ -23,7 +23,7 @@ class Timer(object):
 
         ## Construct and connect to pgsql
     def dbCon(self):
-        cStr = "dbname='{0}' user='{1}' host='{2}' password='{3}'".format(self.db, self.user, self.host, self.password)
+        cStr = f"dbname='{self.db}' user='{self.user}' host='{self.host}' password='{self.password}'"
         self._con = psycopg2.connect(cStr)
         self._con.autocommit = True
         self._db = self._con.cursor()

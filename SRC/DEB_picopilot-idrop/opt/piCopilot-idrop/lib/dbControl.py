@@ -29,7 +29,7 @@ class Builder(object):
         ## Construct and connect to pgsql
         if self.unity.conf.mode != 'ids':
             try:
-                cStr = "dbname='{0}' user='{1}' host='{2}' password='{3}'".format(unity.conf.db, unity.conf.user, unity.conf.host, unity.conf.password)
+                cStr = f"dbname='{unity.conf.db}' user='{unity.conf.user}' host='{unity.conf.host}' password='{unity.conf.password}'"
                 self.con = psycopg2.connect(cStr)
                 self.con.autocommit = True
                 self.db = self.con.cursor()
@@ -55,7 +55,7 @@ class Builder(object):
                 sys.exit(1)
         else:
             try:
-                cStr = "dbname='{0}' user='{1}' host='{2}' password='{3}' sslmode='verify-full'" % (unity.conf.dbName, unity.conf.user, unity.conf.host, unity.conf.password)
+                cStr = f"dbname='{unity.conf.dbName}' user='{unity.conf.user}' host='{unity.conf.host}' password='{unity.conf.password}' sslmode='verify-full'"
                 self.con = psycopg2.connect(cStr)
                 self.con.autocommit = True
                 self.db = self.con.cursor()

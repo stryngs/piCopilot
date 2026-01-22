@@ -7,7 +7,7 @@
 vmStatus=$(lsmod | grep bcm2835_v4l[2] | head -n 1 | awk '{print $1}')
 
 ## Kill any prior resolutions
-killall -9 raspivid
+killall -9 rpicam-vid
 
 ## Load driver if not already loaded
 [[ "$vmStatus" != "bcm2835_v4l2" ]] && modprobe bcm2835-v4l2

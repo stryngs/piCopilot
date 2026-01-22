@@ -14,8 +14,7 @@ from easyThread import Backgrounder
 
 
 class Tpms(object):
-    """A base class for handling tpms
-    """
+    """A base class for handling tpms"""
     def __init__(self):
 
         ## Static string for now --

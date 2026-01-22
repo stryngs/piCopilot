@@ -52,11 +52,11 @@ class BLUE(object):
                     ## Cheap way to snipe kBlue if it hangs
                     kPID = str(self.sh.bashReturn("ps aux | grep kBlu[e] | awk '{print $2}'"))
                     try:
-                        self.sh.bashReturn("kill -9 %s" % kPID)
+                        self.sh.bashReturn(f"kill -9 {kPID}")
                     except:
                         time.sleep(2)
                         try:
-                            self.sh.bashReturn("kill -9 %s" % kPID)
+                            self.sh.bashReturn(f"kill -9 {kPID}")
                         except:
                             pass
                         pass

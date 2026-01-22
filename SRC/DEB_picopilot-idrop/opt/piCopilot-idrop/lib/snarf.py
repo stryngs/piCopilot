@@ -35,7 +35,7 @@ class Snarf(object):
         else:
             self.unity.marker = 0
 
-        print ('Using pkt silent time of:\n{0}\n'.format(self.unity.seenMaxTimer))
+        print (f'Using pkt silent time of:\n{self.unity.seenMaxTimer}\n')
 
         ## Protocols
         if sProtocol is not None:

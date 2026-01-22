@@ -23,13 +23,13 @@ class Plotter(object):
             for i in y:
 
                 ## Custom here
-                iHtml += '<a href="http://192.168.10.254:9090/{0}"</a>{0}</br>'.format(i)
+                iHtml += f'<a href="http://192.168.10.254:9090/{i}"</a>{i}</br>'
             oFile.write(iHtml)
 
 
     def pgsqlConnect(self):
         """Connect to the db"""
-        cStr = "dbname='{0}' user='{1}' host='{2}' password='{3}'".format(self.shared.conf.db, self.shared.conf.user, self.shared.conf.host, self.shared.conf.password)
+        cStr = f"dbname='{self.shared.conf.db}' user='{self.shared.conf.user}' host='{self.shared.conf.host}' password='{self.shared.conf.password}'"
         self.con = psycopg2.connect(cStr)
         self.con.autocommit = True
         self.db = self.con.cursor()

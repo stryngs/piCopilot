@@ -184,7 +184,7 @@ class Blue(object):
         ## Remove a cycle by ignoring at this level of the Class
         if self.IGNORE is True:
             self.eyeball = self.blinder.seenTest_ignore
-            print('\n[~] Ignoring MACs from ignore.lst:\n{0}\n'.format(self.blinder.ignoreSet))
+            print(f'\n[~] Ignoring MACs from ignore.lst:\n{self.blinder.ignoreSet}\n')
         else:
             self.eyeball = self.blinder.seenTest_noignore
             print('\n[~] Not ignoring any MACs\n')

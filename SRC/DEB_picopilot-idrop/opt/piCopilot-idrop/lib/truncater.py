@@ -11,7 +11,7 @@ class Truncater(object):
     def pgsqlConnect(self, shared):
         ## Connects
         ### Need to fix this for config.ini purposes
-        cStr = "dbname='{0}' user='{1}' host='{2}' password='{3}'".format(shared.conf.db, shared.conf.user, shared.conf.host, shared.conf.password)
+        cStr = f"dbname='{shared.conf.db}' user='{shared.conf.user}' host='{shared.conf.host}' password='{shared.conf.password}'"
         self.con = psycopg2.connect(cStr)
         self.con.autocommit = True
         self.db = self.con.cursor()

@@ -19,7 +19,7 @@ class Exporter(object):
 
     def pgsqlConnect(self):
         ## Connects
-        cStr = "dbname='{0}' user='{1}' host='{2}' password='{3}'".format(self.shared.conf.db, self.shared.conf.user, self.shared.conf.host, self.shared.conf.password)
+        cStr = f"dbname='{self.shared.conf.db}' user='{self.shared.conf.user}' host='{self.shared.conf.host}' password='{self.shared.conf.password}'"
         self.con = psycopg2.connect(cStr)
         self.con.autocommit = True
         self.db = self.con.cursor()
@@ -39,13 +39,7 @@ class Exporter(object):
                         """)
         self.db.execute("""
                         CREATE TEMPORARY TABLE tods AS
-                        SELECT addr2, addr3
-                        FROM main WHERE type = 'Data'
-                        AND direc = '01';
-                        """)
-        self.db.execute("""
-                        CREATE TEMPORARY TABLE dsto AS
-                        SELECT addr3, addr2
+                        SELECT addr1, addr2, addr3
                         FROM main WHERE type = 'Data'
                         AND direc = '01';
                         """)
@@ -53,11 +47,7 @@ class Exporter(object):
                         SELECT * FROM tods;
                         """)
         t1 = set(self.db.fetchall())
-        self.db.execute("""
-                        SELECT * FROM dsto;
-                        """)
-        t2 = set(self.db.fetchall())
-        pipeList = list(t1 & t2)
+        pipeList = [i[1:3] for i in t1 if i[0] != i[2]]
 
         ## fsprep
         os.system('rm -f /opt/piCopilot-idrop/logs/probes.csv')
